@@ -7,12 +7,12 @@ body {
   flex-direction: column;
   align-items: center;*/
   color: white;/*
+  background-color: black;
+  /*overflow-y: hidden;*/
   background-image: url("/src/images/main-bg.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;*/
-  background-color: black;
-  /*overflow-y: hidden;*/
+  background-size: cover;
 }
 
 .container {
@@ -331,10 +331,44 @@ input:checked + .slider:before {
 }
 
 @media (max-width: 520px) {
+  /*common styles*/
+  body {
+    background-image: url("/src/images/start_bg_mobile.png");
+    background-repeat: no-repeat;
+    background-position: unset;
+    background-size:auto;
+  }
+
+  /*start page styles*/
+  .main_page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main-title {
+    margin: 0px;
+    margin-top: 330px;
+    font-size: 42px;
+    font-weight: 700;
+  }
+
+  .quiz-select {
+    width: 100%;
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .main-btn {
-    width: 156px;
-    height: 56px;
-    border-radius: 60px;
+    margin-bottom: 20px;
+  }
+
+  .settings-button {
+    top: 20px;
+    right: 20px;
   }
 
   /*setings style*/
@@ -400,6 +434,12 @@ input:checked + .slider:before {
     position: relative;
     min-width: 100%;
     justify-content: space-between;
+  }
+
+  .save-settings > .main-btn {
+    width: 156px;
+    height: 56px;
+    border-radius: 60px;
   }
 
   /*category page styles*/
