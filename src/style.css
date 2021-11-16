@@ -6,13 +6,13 @@ body {
   /*display: flex;
   flex-direction: column;
   align-items: center;*/
-  color: white;/*
+  color: white;
   background-color: black;
   /*overflow-y: hidden;*/
-  background-image: url("/src/images/main-bg.png");
+  /*background-image: url("/src/images/main-bg.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: cover;*/
 }
 
 .container {
@@ -56,6 +56,10 @@ body {
   cursor: pointer;
 }
 
+.main-btn:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+}
 .settings-button {
   position: absolute;
   top: 70px;
@@ -333,10 +337,11 @@ input:checked + .slider:before {
 @media (max-width: 520px) {
   /*common styles*/
   body {
-    background-image: url("/src/images/start_bg_mobile.png");
+    /*background-image: url("/src/images/start_bg_mobile.png");
     background-repeat: no-repeat;
     background-position: unset;
-    background-size:auto;
+    background-size:auto;*/
+    background-color: black;
   }
 
   /*start page styles*/
@@ -523,5 +528,60 @@ input:checked + .slider:before {
 
   .main-footer {
     position: relative;
+  }
+
+  /*question tyles*/
+  .question-header {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .time-range {
+    width: 260px;
+    height: 5px;
+  }
+
+  .time-range::-webkit-slider-thumb {
+    height: 5px !important;
+    width: 5px !important;
+    margin-top: -1px !important;
+  }
+
+  .question-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .question-text {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .question-img {
+    width: 328px;
+    height: 294px;
+    border-radius: 5%;
+    margin-bottom: 25px;
+  }
+
+  .answers-block {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .answer-btn {
+    width: 157px;
+    height: 48px;
   }
 }
