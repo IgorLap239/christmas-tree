@@ -1,5 +1,8 @@
 body {
+  width: 100%;
   min-height: 100%;
+  margin: 0px;
+  padding: 0px;
   /*display: flex;
   flex-direction: column;
   align-items: center;*/
@@ -328,6 +331,76 @@ input:checked + .slider:before {
 }
 
 @media (max-width: 520px) {
+  .main-btn {
+    width: 156px;
+    height: 56px;
+    border-radius: 60px;
+  }
+
+  /*setings style*/
+  .settings {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .settings-container {
+    margin: 0px;
+    margin-top: 20px;
+    align-items: center;
+  }
+  
+  .settings-header {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+  
+  .settings-header > .return-block {
+    min-width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .return-block > span {
+    margin: 0px;
+    font-size: 24px;
+    margin-right: 115px;
+  }
+  
+  .settings-header > .header-btn {
+    display: none;
+  }
+  
+  .setting-block {
+    margin-bottom: 50px;
+  }
+  
+  .setting-title {
+    margin-bottom: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+  
+  .volume-control {
+    width: 290px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .set {
+    margin-left: 20px;
+  }
+  
+  .select-time-block {
+    margin-bottom: 50px;
+  }
+
+  .save-settings {
+    position: relative;
+    min-width: 100%;
+    justify-content: space-between;
+  }
 
   /*category page styles*/
   .category-container {
