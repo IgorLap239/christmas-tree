@@ -530,8 +530,8 @@ input:checked + .slider:before {
     position: relative;
   }
 
-  /*question tyles*/
-  .question-header {
+  /*picture-question styles*/
+  .picture-question-page .question-header {
     width: 100%;
     margin-top: 15px;
     display: flex;
@@ -540,38 +540,38 @@ input:checked + .slider:before {
     justify-content: space-between;
   }
 
-  .time-range {
+  .picture-question-page .time-range {
     width: 260px;
     height: 5px;
   }
 
-  .time-range::-webkit-slider-thumb {
+  .picture-question-page .time-range::-webkit-slider-thumb {
     height: 5px !important;
     width: 5px !important;
     margin-top: -1px !important;
   }
 
-  .question-item {
+  .picture-question-page .question-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
-  .question-text {
+  .picture-question-page .question-text {
     margin-top: 10px;
     text-align: center;
     font-size: 24px;
   }
 
-  .question-img {
+  .picture-question-page .question-img {
     width: 328px;
     height: 294px;
     border-radius: 5%;
     margin-bottom: 25px;
   }
 
-  .answers-block {
+  .picture-question-page .answers-block {
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
@@ -580,8 +580,58 @@ input:checked + .slider:before {
     flex-wrap: wrap;
   }
 
-  .answer-btn {
+  .picture-question-page .answer-btn {
     width: 157px;
     height: 48px;
   }
+
+    /*artist-question styles*/
+    .artist-question-page .question-header {
+      width: 100%;
+      margin-top: 15px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    .artist-question-page .time-range {
+      width: 260px;
+      height: 5px;
+    }
+  
+    .artist-question-page .time-range::-webkit-slider-thumb {
+      height: 5px !important;
+      width: 5px !important;
+      margin-top: -1px !important;
+    }
+  
+    .artist-question-page .question-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .artist-question-page .question-text {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 24px;
+    }
+  
+    .artist-question-page .answers-block {
+      margin-bottom: 115px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  
+    .artist-question-page .answer-img {
+      width: 155px;
+      height: 164px;
+      border-radius: 5%;
+      margin-bottom: 10px;
+    }
 }
