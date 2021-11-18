@@ -804,10 +804,13 @@ input:checked + .slider:before {
 
   .popup .popup-close {
     position: absolute;
+    margin: 0px;
+    padding: 0px;
     z-index: 999999;
     top: 0;
     right: 1rem;
     width: 2rem;
+    height: 20px;
     text-align: center;
     border: none;
     background: #f3f0f0;
@@ -815,4 +818,50 @@ input:checked + .slider:before {
     color: #24241f;
   }
 
+  /*answer popup styles*/
+  .answer-popup .main-popup {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .answer-popup-img {
+    width: 40%;
+  }
+
+  .answer-info {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+  }
+
+  .answer-text {
+    margin-bottom: 5px;
+  }
+  
+  .answer-popup-btn {
+    margin-top: 20px;
+  }
+
+  .right {
+    background-color: #80e459 !;
+  }
+
+  .right .popup-close {
+    background-color: #80e459;
+  }
+
+  .false {
+    background-color: #e94e4e !important;
+  }
+
+  .false .popup-close{
+    background-color: #e94e4e;
+  }
 }
