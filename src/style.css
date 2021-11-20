@@ -1,13 +1,25 @@
+html, body {
+  margin: 0px !important;
+  padding: 0px !important;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   width: 100%;
-  margin: 0px;
-  padding: 0px;
   color: white;
 }
 
 .wrapper {
+  padding: 0px;
+  margin: 0px;
   background-color: black;
-  min-height: 100vh;
+  height: 100vh;
+  border: 3px;
+  box-sizing: border-box;
 }
 
 .container {
@@ -19,12 +31,11 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /*start page styles*/
 .start-page-wrapper {
-  min-height: 100vh;
   background-image: url("/src/images/main-bg.png");
   background-repeat: no-repeat;
   background-position: center;
@@ -39,6 +50,7 @@ body {
 }
 
 .start-title {
+  margin-top: 70% !important;
   margin: 0px;
   font-size: 111px;
   font-weight: 700;
