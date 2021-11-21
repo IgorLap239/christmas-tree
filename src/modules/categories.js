@@ -1,16 +1,180 @@
+/*global module*/
+let currentPage;
+let previosPage;
+let audioFlag = 1;
+let timerFlag = 0;
+const audioLS = 'audio',
+      timerLS = 'timer',
+      timeLS = 'time';
+const startPage = document.querySelector('.start-page-wrapper'),
+      settingsPage = document.querySelector('.settings-wrapper'),
+      categoryPage = document.querySelector('.category-page-wrapper'),
+      timeInput = settingsPage.querySelector('.number'),
+      timerOnBtn = settingsPage.querySelector('.timer-btn'),
+      volumeInput = settingsPage.querySelector('.volume-range');
+
+let playTime = timeInput.value;
+
+function playAudio(index) {
+  if (audioFlag == 1) {
+    let audio = new Audio();
+    switch(index) {
+      case 1:
+        audio.src = '/src/audio/correct-answer.mp3';
+        break;
+      case 2:
+        audio.src = '/src/audio/wrong-answer.mp3';
+        break;
+      case 3:
+        audio.src = '/src/audio/round-done.mp3';
+        break;
+    }
+    audio.play();
+  }
+};
+
+loadSettings();
+
+/*start page module*/
+const settingsButton = startPage.querySelector('.settings-button'),
+      pictureQuizBtn = startPage.querySelector('.picture'),
+      artistQuizBtn = startPage.querySelector('.artist');
+
+settingsButton.addEventListener('click', () => {
+  startPage.classList.toggle('hidden');
+  settingsPage.classList.toggle('hidden');
+  previosPage = startPage;
+  currentPage = settingsPage;
+});
+
+pictureQuizBtn.addEventListener('click', () => {
+  startPage.classList.toggle('hidden');
+  categoryPage.classList.toggle('hidden');
+  previosPage = startPage;
+  currentPage = categoryPage;
+});
+
+artistQuizBtn.addEventListener('click', () => {
+  startPage.classList.toggle('hidden');
+  categoryPage.classList.toggle('hidden');
+  previosPage = startPage;
+  currentPage = categoryPage;
+});
+
+/*settings module*/
+const settingsHomeButton = settingsPage.querySelector('.close');
+const volumeOffBtn = settingsPage.querySelector('.mute');
+const volumeOnBtn = settingsPage.querySelector('.sound');
+const saveBtn = settingsPage.querySelector('.save');
+const defaultBtn = settingsPage.querySelector('.default');
+
+settingsHomeButton.addEventListener('click', () => {
+  previosPage.classList.toggle('hidden');
+  settingsPage.classList.toggle('hidden');
+  currentPage = previosPage;
+  previosPage = settingsPage;
+});
+
+volumeOffBtn.addEventListener('click', () => {
+  if (audioFlag === 1) {
+    audioFlag = 0;
+    volumeInput.value = 0;
+    volumeInput.style.backgroundColor = '#FFFFFF';
+  }
+});
+
+volumeOnBtn.addEventListener('click', () => {
+  if (audioFlag === 0) {
+    audioFlag = 1;
+    volumeInput.value = 1;
+    volumeInput.style.backgroundColor = '#710707';
+  }
+});
+
+function addTimer() {
+  document.querySelectorAll('.question-timer').forEach((e) => {
+    e.classList.remove('hidden');
+  });
+  document.querySelectorAll('.current-time').forEach((e) => {
+    e.textContent = timeInput.value;
+  });
+};
+
+function removeTimer() {
+  document.querySelectorAll('.question-timer').forEach((e) => {
+    e.classList.add('hidden');
+  });
+};
+
+timerOnBtn.addEventListener('click', () => {
+  if (timerOnBtn.checked) {
+    timerFlag = 1;
+    playTime = timeInput.value;
+  } else {
+    timerFlag = 0;
+  }
+});
+
+timeInput.addEventListener('change', () => {
+  playTime = timeInput.value;
+  document.querySelectorAll('.current-time').forEach((e) => {
+    e.textContent = timeInput.value;
+  });
+});
+
+saveBtn.addEventListener('click', () => {
+  if (timerFlag == 1) {
+    addTimer();
+  } else {
+    removeTimer();
+  }
+  saveSettings();
+});
+
+defaultBtn.addEventListener('click', () => {
+  audioFlag = 1;
+  timerFlag = 1;
+  timeInput.value = 20;
+  playTime = timeInput.value;
+  saveSettings();
+});
+
+function saveSettings() {
+  localStorage.setItem(audioLS, audioFlag);
+  localStorage.setItem(timerLS, timerFlag);
+  localStorage.setItem(timeLS, timeInput.value);
+};
+
+function loadSettings(){
+  if (localStorage.getItem(audioLS) != null) {
+    audioFlag = +localStorage.getItem(audioLS);
+    timerFlag = +localStorage.getItem(timerLS);
+    playTime = +localStorage.getItem(timeLS);
+    if (timerFlag == 1) {
+      addTimer();
+      timerOnBtn.checked = 'true';
+    } else {
+      removeTimer();
+    }
+    if (audioFlag == 1) {
+      volumeInput.value = 1;
+      volumeInput.style.backgroundColor = '#710707';
+    } else {
+      volumeInput.value = 0;
+      volumeInput.style.backgroundColor = '#FFFFFF';
+    }
+  }
+}
+
+/*categories module*/
 /* eslint-disable linebreak-style */
-const categoryPage = document.querySelector('.category-page-wrapper');
 const categoryHomeButton = categoryPage.querySelector('.home');
 const scoreButton = categoryPage.querySelector('.score-link');
 const categoriesCovers = categoryPage.querySelectorAll('.category-cover');
-const pictureQuizBt = document.querySelector('.picture');
-const artistQuizBt = document.querySelector('.artist');
 const categoriesBlock = categoryPage.querySelector('.categories');
 const pictureQuiz = document.querySelector('.picture-question-wrapper');
 const artistQuiz = document.querySelector('.artist-question-wrapper');
-const startPage = document.querySelector('.start-page-wrapper');
 const categoriesSettingsButton = categoryPage.querySelector('.settings-button');
-const settingPage = document.querySelector('.settings-wrapper');
 
 let currentCategory = 0;
 let categoryCounter = 0;
@@ -21,12 +185,16 @@ let flag = 0;
 categoryHomeButton.addEventListener('click', () => {
   startPage.classList.toggle('hidden');
   categoryPage.classList.toggle('hidden');
+  previosPage = categoryPage;
+  currentPage = startPage;
 });
 
 //open settings
 categoriesSettingsButton.addEventListener('click', () => {
   categoryPage.classList.toggle('hidden');
-  settingPage.classList.toggle('hidden');
+  settingsPage.classList.toggle('hidden');
+  previosPage = categoryPage;
+  currentPage = settingsPage;
 });
 
 
@@ -38,22 +206,11 @@ function setCover(urlStr, index) {
   img.src = urlStr;
   img.onload = () => {
     categoriesCovers[index].style.backgroundImage = `url(${img.src})`;
-    categoriesCovers[index].style.backgroundSize = `cover`;
+    categoriesCovers[index].style.backgroundSize = 'cover';
     categoriesCovers[index].style.transition = 'background-image 0.5s ease-in-out';
-    categoriesCovers[index].style.cursor = `pointer`;
+    categoriesCovers[index].style.cursor = 'pointer';
   };
 }
-
-pictureQuizBt.addEventListener('click', () => {
-  setCategoryCover();
-  categoriesBlock.classList.add('pic-quiz');
-});
-
-artistQuizBt.addEventListener('click', () => {
-  setCategoryCover();
-  categoriesBlock.classList.add('art-quiz');
-});
-
 
 function setCategoryCover () {
   const target = event.target;
@@ -73,6 +230,16 @@ function setCategoryCover () {
   }
   imgNum = 0;
 }
+
+pictureQuizBtn.addEventListener('click', () => {
+  setCategoryCover();
+  categoriesBlock.classList.add('pic-quiz');
+});
+
+artistQuizBtn.addEventListener('click', () => {
+  setCategoryCover();
+  categoriesBlock.classList.add('art-quiz');
+});
 
 //start quiz codes
 categoryPage.addEventListener('click', () => {
@@ -94,15 +261,14 @@ function startQuiz() {
     flag = 1;
     artistQuiz.classList.toggle('hidden');
     categoryPage.classList.toggle('hidden');
+    console.log(currentCategory);
     getInfo(flag);
   }
 }
 
 //play Quiz module
-const picQuestionPage = document.querySelector('.picture-question-wrapper');
-const artQuestionPage = document.querySelector('.artist-question-wrapper');
-const answersBtns = picQuestionPage.querySelectorAll('.answer-btn');
-const questionImg = picQuestionPage.querySelector('.question-img');
+const answersBtns = pictureQuiz.querySelectorAll('.answer-btn');
+const questionImg = pictureQuiz.querySelector('.question-img');
 const answerPopup = document.querySelector('.answer-popup');
 const contentPopup = answerPopup.querySelector('.popup-content');
 const answerImg = answerPopup.querySelector('.answer-popup-img');
@@ -187,14 +353,16 @@ function addAnswers() {
   }
 };
 
-picQuestionPage.addEventListener('click', (e) => {
+pictureQuiz.addEventListener('click', (e) => {
   if (event.target.classList.contains('answer-btn')) {
     answersArr = [];
     if (event.target.textContent === rightAns) {
       contentPopup.classList.add('right');
+      playAudio(1);
       categoryCounter++;
     } else {
       contentPopup.classList.add('false');
+      playAudio(2);
     }
     addPopupInfo();
     questionCounter++;
@@ -203,8 +371,8 @@ picQuestionPage.addEventListener('click', (e) => {
 });
 
 //artist question code
-const answersImages = artQuestionPage.querySelectorAll('.answer-img');
-const questionText = artQuestionPage.querySelector('.question-text');
+const answersImages = artistQuiz.querySelectorAll('.answer-img');
+const questionText = artistQuiz.querySelector('.question-text');
 
 function selectAnswersPictures () {
   console.log(answersImages)
@@ -236,14 +404,16 @@ function addQuestionText() {
   questionText.textContent = `Автором какой картины является ${questionArtist}?`;
 };
 
-artQuestionPage.addEventListener('click', (e) => {
+artistQuiz.addEventListener('click', (e) => {
   if (event.target.classList.contains('answer-img')) {
     answersArr = [];
     if (event.target.style.backgroundImage.split('"')[1] === rightAns) {
       contentPopup.classList.add('right');
       categoryCounter++;
+      playAudio(1);
     } else {
       contentPopup.classList.add('false');
+      playAudio(2);
     }
     addPopupInfo();
     questionCounter++;
@@ -268,11 +438,17 @@ nextQuestionBtn.addEventListener('click', () => {
   } else {
     answerPopup.classList.toggle('hidden');
     if (categoryCounter < 10) {
+      playAudio(3);
       clearScore.textContent = `${categoryCounter} / 10`;
       clearPopup.classList.toggle('hidden');
+      categoryDone();
+      questionCounter = 0;
       categoryCounter = 0;
     } else {
       topscorePopup.classList.toggle('hidden');
+      playAudio(3);
+      categoryDone();
+      questionCounter = 0;
       categoryCounter = 0;
     }
   }
@@ -282,13 +458,14 @@ nextQuestionBtn.addEventListener('click', () => {
 const homeBtn = clearPopup.querySelector('.clear-popup-home-btn');
 const categoryPageClearBtn = clearPopup.querySelector('.categories-popup-home-btn');
 
+
 homeBtn.addEventListener('click', () => {
   clearScore.textContent = '';
   clearPopup.classList.toggle('hidden');
   if (flag === 0) {
-    picQuestionPage.classList.toggle('hidden');
+    pictureQuiz.classList.toggle('hidden');
   } else {
-    artQuestionPage.classList.toggle('hidden');
+    artistQuiz.classList.toggle('hidden');
   }
   startPage.classList.toggle('hidden');
 });
@@ -297,9 +474,25 @@ categoryPageClearBtn.addEventListener('click', () => {
   clearScore.textContent = '';
   clearPopup.classList.toggle('hidden');
   if (flag === 0) {
-    picQuestionPage.classList.toggle('hidden');
+    pictureQuiz.classList.toggle('hidden');
   } else {
-    artQuestionPage.classList.toggle('hidden');
+    artistQuiz.classList.toggle('hidden');
   }
   categoryPage.classList.toggle('hidden');
 });
+
+
+//category finish code 
+function categoryDone () {
+  console.log(categoriesCovers);
+  let item;
+  if (flag === 0) {
+    item = categoriesCovers[(currentCategory - 9) / 10];
+  } else {
+    item = categoriesCovers[(currentCategory - 9) / 10];
+  }
+  let itemCounter = item.closest('.category-item').querySelector('.category-counter');
+  itemCounter.classList.toggle('hidden');
+  itemCounter.textContent = `${categoryCounter} / 10`;
+  item.querySelector('.done-icon').classList.toggle('hidden');
+};
