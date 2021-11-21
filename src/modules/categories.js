@@ -318,7 +318,6 @@ async function getInfo(flag) {
       timerInput = pictureQuiz.querySelector('.time-range');
       if (timerFlag == 1)
         startTimer();
-      startTimer();
       selectAnswersPictures();
       addQuestionText();
     }
@@ -407,13 +406,36 @@ function selectQuestionPicture () {
   };
 };
 
-function addAnswers() {
-  for (let j = 0; j < 3; j++) {
-    let x = getRandomNum();
-    answersArr.push(authorsArr[x]);
+function contains(arr, elem) {
+  for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === elem) {
+          return true;
+      }
   }
+  return false;
+}
+
+function getAnswer(ctg) {
+  let x = getRandomNum();
+  let newAnswer;
+  if (ctg == 'pic') {
+    newAnswer = authorsArr[x];
+  } else if (ctg == 'art') {
+    newAnswer = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${x}.webp`;
+  }
+  if (contains(answersArr, newAnswer)) {
+    getAnswer();
+  } else {
+    answersArr.push(newAnswer);
+  }
+}
+
+function addAnswers() {
   rightAns = data[currentCategory].author;
   answersArr.push(rightAns);
+  for (let j = 0; j < 3; j++) {
+    getAnswer('pic');
+  }
   answersArr = shuffle(answersArr);
   for (let i = 0; i < 4; i++) {
     answersBtns[i].textContent = answersArr[i];
@@ -429,14 +451,11 @@ const answersImages = artistQuiz.querySelectorAll('.answer-img');
 const questionText = artistQuiz.querySelector('.question-text');
 
 function selectAnswersPictures () {
-  console.log(answersImages)
-  for (let j = 0; j < 3; j++) {
-    let x = getRandomNum();
-    urlStr = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${x}.webp`;
-    answersArr.push(urlStr);
-  }
   rightAns = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${data[currentCategory].imageNum}.webp`;
   answersArr.push(rightAns);
+  for (let j = 0; j < 3; j++) {
+    getAnswer('art');
+  }
   answersArr = shuffle(answersArr);
   for (let i = 0; i < 4; i++) {
     const img = new Image();
@@ -503,7 +522,6 @@ nextQuestionBtn.addEventListener('click', () => {
 const homeBtn = clearPopup.querySelector('.clear-popup-home-btn');
 const categoryPageClearBtn = clearPopup.querySelector('.categories-popup-home-btn');
 
-
 homeBtn.addEventListener('click', () => {
   clearScore.textContent = '';
   clearPopup.classList.toggle('hidden');
@@ -527,7 +545,7 @@ categoryPageClearBtn.addEventListener('click', () => {
 });
 
 //category finish code 
-function categoryDone () {
+function categoryDone() {
   let item;
   if (flag === 0) {
     item = categoriesCovers[(currentCategory - 9) / 10];
