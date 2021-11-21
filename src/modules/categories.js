@@ -124,6 +124,10 @@ timeInput.addEventListener('change', () => {
   document.querySelectorAll('.current-time').forEach((e) => {
     e.textContent = timeInput.value;
   });
+  document.querySelectorAll('.time-range').forEach((e) => {
+    e.value = timeInput.value;
+    e.max = timeInput.value;
+  });
 });
 
 saveBtn.addEventListener('click', () => {
