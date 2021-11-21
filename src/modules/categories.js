@@ -98,6 +98,10 @@ function addTimer() {
   document.querySelectorAll('.current-time').forEach((e) => {
     e.textContent = timeInput.value;
   });
+  document.querySelectorAll('.time-range').forEach((e) => {
+    e.value = timeInput.value;
+    e.max = timeInput.value;
+  });
 };
 
 function removeTimer() {
@@ -150,6 +154,14 @@ function loadSettings(){
     audioFlag = +localStorage.getItem(audioLS);
     timerFlag = +localStorage.getItem(timerLS);
     playTime = +localStorage.getItem(timeLS);
+    timeInput.value = playTime;
+    document.querySelectorAll('.current-time').forEach((e) => {
+      e.textContent = timeInput.value;
+    });
+    document.querySelectorAll('.time-range').forEach((e) => {
+      e.value = timeInput.value;
+      e.max = timeInput.value;
+    });
     if (timerFlag == 1) {
       addTimer();
       timerOnBtn.checked = 'true';
@@ -261,7 +273,6 @@ function startQuiz() {
     flag = 1;
     artistQuiz.classList.toggle('hidden');
     categoryPage.classList.toggle('hidden');
-    console.log(currentCategory);
     getInfo(flag);
   }
 }
@@ -282,6 +293,9 @@ let questionCounter = 0;
 let authorsArr = [];
 let answersArr = [];
 let rightAns = '';
+let selectTimer;
+let timerInput;
+let timerUse = null;
 
 //quiz code
 async function getInfo(flag) {
@@ -293,15 +307,68 @@ async function getInfo(flag) {
       authorsArr.push(data[i].author);
     }
     if (flag == 0) {
+      selectTimer = pictureQuiz.querySelector('.current-time');
+      timerInput = pictureQuiz.querySelector('.time-range');
+      if (timerFlag == 1)
+        startTimer();
       selectQuestionPicture();
       addAnswers();
     } else {
+      selectTimer = artistQuiz.querySelector('.current-time');
+      timerInput = pictureQuiz.querySelector('.time-range');
+      if (timerFlag == 1)
+        startTimer();
+      startTimer();
       selectAnswersPictures();
       addQuestionText();
     }
   } catch (e) {
     console.log(e);
   }
+}
+
+function showAnswer (event) {
+  if (event == 'timer') {
+    contentPopup.classList.add('false');
+    playAudio(2);
+    addPopupInfo();
+    questionCounter++;
+    answerPopup.classList.toggle('hidden');
+  } else {
+    if (event.target.classList.contains('answer-btn') || event.target.classList.contains('answer-img')) {
+      if (timerUse != null) {
+        clearInterval(timerUse);
+      }
+      answersArr = [];
+      if (event.target.textContent === rightAns) {
+        contentPopup.classList.add('right');
+        playAudio(1);
+        categoryCounter++;
+      } else {
+        contentPopup.classList.add('false');
+        playAudio(2);
+      }
+      addPopupInfo();
+      questionCounter++;
+      answerPopup.classList.toggle('hidden');
+    }
+  }
+}
+
+function startTimer() {
+  let timer = playTime;
+  let startTime = playTime;
+  let percent = (timerInput.value / startTime) * 100;
+  timerUse = setInterval(function () {
+      selectTimer.textContent = timer;
+      timerInput.value = timer;
+      percent = (timerInput.value / startTime) * 100;
+      timerInput.style.background = `linear-gradient(to right, #710707 0%, #710707 ${percent}%, #c4c4c4 ${percent}%, #c4c4c4 100%)`
+      if (--timer < 0) {
+        clearInterval(timerUse);
+        showAnswer('timer');
+      }
+  }, 1000);
 }
 
 function getRandomNum(a = 0, b = 240) {
@@ -354,20 +421,7 @@ function addAnswers() {
 };
 
 pictureQuiz.addEventListener('click', (e) => {
-  if (event.target.classList.contains('answer-btn')) {
-    answersArr = [];
-    if (event.target.textContent === rightAns) {
-      contentPopup.classList.add('right');
-      playAudio(1);
-      categoryCounter++;
-    } else {
-      contentPopup.classList.add('false');
-      playAudio(2);
-    }
-    addPopupInfo();
-    questionCounter++;
-    answerPopup.classList.toggle('hidden');
-  }
+  showAnswer(e);
 });
 
 //artist question code
@@ -405,20 +459,7 @@ function addQuestionText() {
 };
 
 artistQuiz.addEventListener('click', (e) => {
-  if (event.target.classList.contains('answer-img')) {
-    answersArr = [];
-    if (event.target.style.backgroundImage.split('"')[1] === rightAns) {
-      contentPopup.classList.add('right');
-      categoryCounter++;
-      playAudio(1);
-    } else {
-      contentPopup.classList.add('false');
-      playAudio(2);
-    }
-    addPopupInfo();
-    questionCounter++;
-    answerPopup.classList.toggle('hidden');
-  }
+  showAnswer(e);
 });
 
 //answer popup code
@@ -428,9 +469,13 @@ nextQuestionBtn.addEventListener('click', () => {
     if (flag == 0) {
       selectQuestionPicture();
       addAnswers();
+      if (timerFlag == 1)
+        startTimer();
     } else {
       selectAnswersPictures();
       addQuestionText();
+      if (timerFlag == 1)
+        startTimer();
     }
     answerPopup.classList.toggle('hidden');
     contentPopup.classList.remove('false');
@@ -481,17 +526,15 @@ categoryPageClearBtn.addEventListener('click', () => {
   categoryPage.classList.toggle('hidden');
 });
 
-
 //category finish code 
 function categoryDone () {
-  console.log(categoriesCovers);
   let item;
   if (flag === 0) {
     item = categoriesCovers[(currentCategory - 9) / 10];
   } else {
-    item = categoriesCovers[(currentCategory - 9) / 10];
+    item = categoriesCovers[(currentCategory - 129) / 10];
   }
-  let itemCounter = item.closest('.category-item').querySelector('.category-counter');
+  const itemCounter = item.closest('.category-item').querySelector('.category-counter');
   itemCounter.classList.toggle('hidden');
   itemCounter.textContent = `${categoryCounter} / 10`;
   item.querySelector('.done-icon').classList.toggle('hidden');
