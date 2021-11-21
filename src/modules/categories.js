@@ -288,6 +288,12 @@ const nextQuestionBtn = answerPopup.querySelector('.answer-popup-btn');
 const clearPopup = document.querySelector('.clear-popup');
 const topscorePopup = document.querySelector('.topscore-popup');
 const clearScore = clearPopup.querySelector('.clear-score');
+const exitPopup = document.querySelector('.exit-popup');
+
+const pictureQuizHomeBtn = pictureQuiz.querySelector('.home');
+const artistQuizHomeBtn = artistQuiz.querySelector('.home');
+const pictureQuizRetBtng = pictureQuiz.querySelector('.return');
+const artistQuizRetBtng = artistQuiz.querySelector('.return');
 
 let questionCounter = 0;
 let authorsArr = [];
@@ -298,7 +304,27 @@ let timerInput;
 let timerUse = null;
 
 //quiz code
-async function getInfo(flag) {
+pictureQuizHomeBtn.addEventListener('click', () => {
+  exitPopup.classList.toggle('hidden');
+  currentPage = startPage;
+});
+
+artistQuizHomeBtn.addEventListener('click', () => {
+  exitPopup.classList.toggle('hidden');
+  currentPage = startPage;
+});
+
+pictureQuizRetBtng.addEventListener('click', () => {
+  exitPopup.classList.toggle('hidden');
+  currentPage = categoryPage;
+});
+
+artistQuizRetBtng.addEventListener('click', () => {
+  exitPopup.classList.toggle('hidden');
+  currentPage = categoryPage;
+});
+
+async function getInfo() {
   const url = `https://raw.githubusercontent.com/IgorLap239/image-data/master/images.json`;
   try {
     const res = await fetch(url);
@@ -394,7 +420,7 @@ function addPopupInfo () {
   textsInfo[2].textContent = data[currentCategory].year;
 }
 
-//picture quiz code
+//picture question code
 function selectQuestionPicture () {
   let urlStr = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${currentCategory}.webp`;
   const img = new Image();
@@ -402,15 +428,15 @@ function selectQuestionPicture () {
   img.onload = () => {
     questionImg.style.backgroundImage = `url(${img.src})`;
     answerImg.style.backgroundImage = `url(${img.src})`;
-    answerImg.style.backgroundSize = `cover`;
+    answerImg.style.backgroundSize = 'cover';
   };
-};
+}
 
 function contains(arr, elem) {
   for (var i = 0; i < arr.length; i++) {
-      if (arr[i] === elem) {
-          return true;
-      }
+    if (arr[i] === elem) {
+      return true;
+    }
   }
   return false;
 }
@@ -557,3 +583,28 @@ function categoryDone() {
   itemCounter.textContent = `${categoryCounter} / 10`;
   item.querySelector('.done-icon').classList.toggle('hidden');
 };
+
+/*exit popup code*/
+const cancelBtn = exitPopup.querySelector('.cansel-exit');
+const exitBtn = exitPopup.querySelector('.exit');
+
+cancelBtn.addEventListener('click', () => {
+  exitPopup.classList.toggle('hidden');
+});
+
+exitBtn.addEventListener('click', () => {
+  exitPopup.classList.toggle('hidden');
+  if (flag === 0) {
+    pictureQuiz.classList.toggle('hidden');
+  } else {
+    artistQuiz.classList.toggle('hidden');
+  }
+  if (!answerPopup.classList.contains('hidden'))
+    answerPopup.classList.toggle('hidden');
+  currentPage.classList.toggle('hidden');
+  if (timerUse)
+    clearInterval(timerUse);
+  questionCounter = 0;
+  categoryCounter = 0;
+  answersArr = [];
+});

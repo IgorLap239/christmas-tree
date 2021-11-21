@@ -653,6 +653,10 @@ input:checked + .slider:before {
 }
 
 /*result popups styles*/
+.exit-popup {
+  z-index: 99;
+}
+
 .clear-popup .main-popup, .exit-popup .main-popup, .topscore-popup .main-popup {
   display: flex;
   flex-direction: column;
