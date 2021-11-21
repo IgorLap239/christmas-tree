@@ -7,18 +7,18 @@ const start = () => {
         QuizPage = document.querySelector('.category-page-wrapper');
 
   settingsButton.addEventListener('click', () => {
-    startPage.classList.add('hidden');
-    settingsPage.classList.remove('hidden');
+    startPage.classList.toggle('hidden');
+    settingsPage.classList.toggle('hidden');
   });
 
   pictureQuizBtn.addEventListener('click', () => {
-    startPage.classList.add('hidden');
-    QuizPage.classList.remove('hidden');
+    startPage.classList.toggle('hidden');
+    QuizPage.classList.toggle('hidden');
   });
 
   artistQuizBtn.addEventListener('click', () => {
-    startPage.classList.add('hidden');
-    QuizPage.classList.remove('hidden');
+    startPage.classList.toggle('hidden');
+    QuizPage.classList.toggle('hidden');
   });
 };
 
