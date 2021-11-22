@@ -36,7 +36,7 @@ body {
 
 /*start page styles*/
 .start-page-wrapper {
-  background-image: url("/src/images/main-bg.png");
+  background-image: url("./src/images/main-bg.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

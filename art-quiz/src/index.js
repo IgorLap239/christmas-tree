@@ -29,13 +29,13 @@ function playAudio(index) {
     let audio = new Audio();
     switch(index) {
       case 1:
-        audio.src = '/src/audio/correct-answer.mp3';
+        audio.src = './src/audio/correct-answer.mp3';
         break;
       case 2:
-        audio.src = '/src/audio/wrong-answer.mp3';
+        audio.src = './src/audio/wrong-answer.mp3';
         break;
       case 3:
-        audio.src = '/src/audio/round-done.mp3';
+        audio.src = './src/audio/round-done.mp3';
         break;
     }
     audio.play();
