@@ -3,6 +3,7 @@ let currentPage;
 let previosPage;
 let audioFlag = 1;
 let timerFlag = 0;
+let retryFlag = 0;
 let flag = 0;
 const audioLS = 'audio',
       timerLS = 'timer',
@@ -283,6 +284,11 @@ categoryPage.addEventListener('click', () => {
     let tmpArr = target.style.backgroundImage.split('/');
     currentCategory = tmpArr[tmpArr.length - 1].split('.')[0];
     startQuiz();
+  } else if (target.classList.contains('retry')) {
+    retryFlag = 1;
+    let tmpArr = target.closest('.category-cover').style.backgroundImage.split('/');
+    currentCategory = tmpArr[tmpArr.length - 1].split('.')[0];
+    startQuiz();
   }
 });
 
@@ -300,15 +306,13 @@ function startQuiz() {
 
 function selectDoneCat(i, count) {
   let item = categoriesCovers[i];
-  console.log(categoriesCovers[i]);
   const itemCounter = item.closest('.category-item').querySelector('.category-counter');
-  itemCounter.classList.toggle('hidden');
+  itemCounter.classList.remove('hidden');
   itemCounter.textContent = `${count} / 10`;
-  item.querySelector('.done-icon').classList.toggle('hidden');
+  item.querySelector('.done').classList.remove('hidden');
 }
 
 function loadCatResults() {
-  console.log('hello');
   if (flag == 0) {
     if (localStorage.getItem(picResLS) != null) {
       loadArr = JSON.parse(localStorage.getItem(picResLS));
@@ -319,13 +323,9 @@ function loadCatResults() {
     }
   }
   loadArr.forEach(e => {
-    console.log(e.catNum, e.catRes)
     selectDoneCat(e.catNum, e.catRes);
   })
 }
-
-
-
 
 //play Quiz module
 const answersBtns = pictureQuiz.querySelectorAll('.answer-btn');
@@ -633,28 +633,36 @@ function categoryDone() {
     item = categoriesCovers[index];
   }
   const itemCounter = item.closest('.category-item').querySelector('.category-counter');
-  itemCounter.classList.toggle('hidden');
+  itemCounter.classList.remove('hidden');
   itemCounter.textContent = `${categoryCounter} / 10`;
-  item.querySelector('.done').classList.toggle('hidden');
+  item.querySelector('.done').classList.remove('hidden');
+  if (retryFlag == 1) {
+    checkLS(index);
+  }
   let catResObj = {
     catNum: index,
     catRes: categoryCounter,
     rightAnsNum: categoryRightAnswersArr
   }
-  if (flag === 0) {
-    pictureQuizResults.push(catResObj);
-  } else {
-    artistQuizResults.push(catResObj);
-  }
+  loadArr.push(catResObj);
   saveCategoriesResults();
+  retryFlag = 0;
   categoryRightAnswersArr = [];
 };
 
+function checkLS(i) {
+  loadArr.forEach(e => {
+    if (e.catNum == i) {
+      loadArr.splice(loadArr.indexOf(e),1);
+    }
+  });
+}
+
 function saveCategoriesResults() {
   if (flag === 0) {
-    localStorage.setItem(picResLS, JSON.stringify(pictureQuizResults));
+    localStorage.setItem(picResLS, JSON.stringify(loadArr));
   } else {
-    localStorage.setItem(artResLS, JSON.stringify(artistQuizResults));
+    localStorage.setItem(artResLS, JSON.stringify(loadArr));
   }
 }
 
@@ -681,4 +689,5 @@ exitBtn.addEventListener('click', () => {
   questionCounter = 0;
   categoryCounter = 0;
   answersArr = [];
+  retryFlag = 0;
 });
