@@ -3,9 +3,12 @@ let currentPage;
 let previosPage;
 let audioFlag = 1;
 let timerFlag = 0;
+let flag = 0;
 const audioLS = 'audio',
       timerLS = 'timer',
-      timeLS = 'time';
+      timeLS = 'time',
+      picResLS = 'picRes',
+      artResLS = 'artRes';
 const startPage = document.querySelector('.start-page-wrapper'),
       settingsPage = document.querySelector('.settings-wrapper'),
       categoryPage = document.querySelector('.category-page-wrapper'),
@@ -14,6 +17,17 @@ const startPage = document.querySelector('.start-page-wrapper'),
       volumeInput = settingsPage.querySelector('.volume-range');
 
 let playTime = timeInput.value;
+
+/*for save categoris resulte to local storage*/
+let pictureQuizResults = [];
+let artistQuizResults = [];
+let categoryRightAnswersArr = [];
+let loadArr = [];
+/*const catNumLS = 'catNum';
+const catResLS = 'catRes';
+const rightAnsArrLS = 'rightAnsArr';*/
+
+
 
 function playAudio(index) {
   if (audioFlag == 1) {
@@ -48,6 +62,9 @@ settingsButton.addEventListener('click', () => {
 });
 
 pictureQuizBtn.addEventListener('click', () => {
+  flag = 0;
+  loadArr = [];
+  loadCatResults();
   startPage.classList.toggle('hidden');
   categoryPage.classList.toggle('hidden');
   previosPage = startPage;
@@ -55,6 +72,9 @@ pictureQuizBtn.addEventListener('click', () => {
 });
 
 artistQuizBtn.addEventListener('click', () => {
+  flag = 1;
+  loadArr = [];
+  loadCatResults();
   startPage.classList.toggle('hidden');
   categoryPage.classList.toggle('hidden');
   previosPage = startPage;
@@ -195,7 +215,6 @@ const categoriesSettingsButton = categoryPage.querySelector('.settings-button');
 let currentCategory = 0;
 let categoryCounter = 0;
 let data = [];
-let flag = 0;
 
 //return to start page
 categoryHomeButton.addEventListener('click', () => {
@@ -268,18 +287,45 @@ categoryPage.addEventListener('click', () => {
 });
 
 function startQuiz() {
-  if (categoriesBlock.classList.contains('pic-quiz')) {
-    flag = 0;
+  if (flag == 0) {
     pictureQuiz.classList.toggle('hidden');
     categoryPage.classList.toggle('hidden');
     getInfo(flag);
   } else {
-    flag = 1;
     artistQuiz.classList.toggle('hidden');
     categoryPage.classList.toggle('hidden');
     getInfo(flag);
   }
 }
+
+function selectDoneCat(i, count) {
+  let item = categoriesCovers[i];
+  console.log(categoriesCovers[i]);
+  const itemCounter = item.closest('.category-item').querySelector('.category-counter');
+  itemCounter.classList.toggle('hidden');
+  itemCounter.textContent = `${count} / 10`;
+  item.querySelector('.done-icon').classList.toggle('hidden');
+}
+
+function loadCatResults() {
+  console.log('hello');
+  if (flag == 0) {
+    if (localStorage.getItem(picResLS) != null) {
+      loadArr = JSON.parse(localStorage.getItem(picResLS));
+    }
+  } else if (flag == 1) {
+    if (localStorage.getItem(artResLS) != null) {
+      loadArr = JSON.parse(localStorage.getItem(artResLS));
+    }
+  }
+  loadArr.forEach(e => {
+    console.log(e.catNum, e.catRes)
+    selectDoneCat(e.catNum, e.catRes);
+  })
+}
+
+
+
 
 //play Quiz module
 const answersBtns = pictureQuiz.querySelectorAll('.answer-btn');
@@ -373,6 +419,7 @@ function showAnswer (event) {
         contentPopup.classList.add('right');
         playAudio(1);
         categoryCounter++;
+        categoryRightAnswersArr.push(questionCounter);
       } else {
         contentPopup.classList.add('false');
         playAudio(2);
@@ -577,16 +624,39 @@ categoryPageClearBtn.addEventListener('click', () => {
 //category finish code 
 function categoryDone() {
   let item;
+  let index = 0;
   if (flag === 0) {
-    item = categoriesCovers[(currentCategory - 9) / 10];
+    index = (currentCategory - 9) / 10;
+    item = categoriesCovers[index];
   } else {
-    item = categoriesCovers[(currentCategory - 129) / 10];
+    index = (currentCategory - 129) / 10;
+    item = categoriesCovers[index];
   }
   const itemCounter = item.closest('.category-item').querySelector('.category-counter');
   itemCounter.classList.toggle('hidden');
   itemCounter.textContent = `${categoryCounter} / 10`;
-  item.querySelector('.done-icon').classList.toggle('hidden');
+  item.querySelector('.done').classList.toggle('hidden');
+  let catResObj = {
+    catNum: index,
+    catRes: categoryCounter,
+    rightAnsNum: categoryRightAnswersArr
+  }
+  if (flag === 0) {
+    pictureQuizResults.push(catResObj);
+  } else {
+    artistQuizResults.push(catResObj);
+  }
+  saveCategoriesResults();
+  categoryRightAnswersArr = [];
 };
+
+function saveCategoriesResults() {
+  if (flag === 0) {
+    localStorage.setItem(picResLS, JSON.stringify(pictureQuizResults));
+  } else {
+    localStorage.setItem(artResLS, JSON.stringify(artistQuizResults));
+  }
+}
 
 /*exit popup code*/
 const cancelBtn = exitPopup.querySelector('.cansel-exit');
