@@ -20,14 +20,8 @@ const startPage = document.querySelector('.start-page-wrapper'),
 let playTime = timeInput.value;
 
 /*for save categoris resulte to local storage*/
-let pictureQuizResults = [];
-let artistQuizResults = [];
 let categoryRightAnswersArr = [];
 let loadArr = [];
-/*const catNumLS = 'catNum';
-const catResLS = 'catRes';
-const rightAnsArrLS = 'rightAnsArr';*/
-
 
 
 function playAudio(index) {
@@ -207,6 +201,7 @@ function loadSettings(){
 /* eslint-disable linebreak-style */
 const categoryHomeButton = categoryPage.querySelector('.home');
 const scoreButton = categoryPage.querySelector('.score-link');
+const categoriesItems = categoryPage.querySelectorAll('.category-item');
 const categoriesCovers = categoryPage.querySelectorAll('.category-cover');
 const categoriesBlock = categoryPage.querySelector('.categories');
 const pictureQuiz = document.querySelector('.picture-question-wrapper');
@@ -216,6 +211,7 @@ const categoriesSettingsButton = categoryPage.querySelector('.settings-button');
 let currentCategory = 0;
 let categoryCounter = 0;
 let data = [];
+let resultData = [];
 
 //return to start page
 categoryHomeButton.addEventListener('click', () => {
@@ -277,6 +273,96 @@ artistQuizBtn.addEventListener('click', () => {
   categoriesBlock.classList.add('art-quiz');
 });
 
+/*result page functions*/
+const categoryResultPage = document.querySelector('.results-page-wrapper');
+const resultsBlock = categoryResultPage.querySelector('.results');
+const infoPopup = document.querySelector('.info-popup');
+const contentInfoPopup = infoPopup.querySelector('.popup-content');
+const infoImg = infoPopup.querySelector('.info-popup-img');
+const textsInfoPopup = infoPopup.querySelectorAll('span');
+const resultItems = resultsBlock.querySelectorAll('.result-item');
+const infoResultTitle = categoryResultPage.querySelector('.results-title');
+const infoResultCounter = categoryResultPage.querySelector('.category-counter');
+
+function addResultImges (curCat, num) {
+  let arrTrueAns = [];
+  if (loadArr.find(elem => elem.catNum == num))
+    arrTrueAns = loadArr.find(elem => elem.catNum == num).rightAnsNum;
+  for (let i = 0; i < 10; i++) {
+    let urlStr = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${curCat + i}.webp`;
+    setResultsCovers(urlStr, i, arrTrueAns);
+  }
+}
+
+function setResultsCovers(urlStr, i, arr) {
+  const img = new Image();
+  img.src = urlStr;
+  img.onload = () => {
+    /*const imgContainer = document.createElement('div');
+    imgContainer.classList.add('result-item');*/
+    if (!arr.includes(i)) {
+      resultItems[i].style.backgroundImage = `linear-gradient(black, black), url(${img.src})`;
+      resultItems[i].style.backgroundBlendMode = 'saturation';
+    } else {
+      resultItems[i].style.backgroundImage = `url(${img.src})`;
+    }
+    resultItems[i].style.backgroundSize = 'cover';
+    resultItems[i].style.cursor = 'pointer';
+  };
+}
+
+async function getResultInfo() {
+  const url = `https://raw.githubusercontent.com/IgorLap239/image-data/master/images.json`;
+  try {
+    const res = await fetch(url);
+    resultData = await res.json();
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function addInfo (index) {
+  const urlStr = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${index}.webp`;
+  const img = new Image();
+  img.src = urlStr;
+  img.onload = () => {
+    infoImg.style.backgroundImage = `url(${img.src})`;
+    infoImg.style.backgroundSize = 'cover';
+  };
+  textsInfoPopup[0].textContent = resultData[index].name;
+  textsInfoPopup[1].textContent = resultData[index].author;
+  textsInfoPopup[2].textContent = resultData[index].year;
+}
+
+function showInfo (event) {
+  const resItemsList = [...resultItems];
+  const itemNum = +resItemsList.indexOf(event.target) + currentCategory;
+  addInfo(itemNum);
+  infoPopup.classList.toggle('hidden');
+}
+
+categoryResultPage.addEventListener('click', (e) => {
+  if (event.target.classList.contains('result-item')) {
+    showInfo(e);
+  } else if (event.target.closest('.categories-btn')) {
+    currentPage.classList.toggle('hidden');
+    previosPage.classList.toggle('hidden');
+    currentPage = previosPage;
+  } else if (event.target.classList.contains('home')) {
+    currentPage.classList.toggle('hidden');
+    startPage.classList.toggle('hidden');
+    currentPage = startPage;
+  }
+});
+
+infoPopup.addEventListener('click', (e) => {
+  if (event.target.classList.contains('info-popup-btn') || event.target.closest('body'))
+    infoPopup.classList.toggle('hidden');
+});
+
+/*end of result page functions*/
+
+
 //start quiz codes
 categoryPage.addEventListener('click', () => {
   const target = event.target
@@ -289,6 +375,19 @@ categoryPage.addEventListener('click', () => {
     let tmpArr = target.closest('.category-cover').style.backgroundImage.split('/');
     currentCategory = tmpArr[tmpArr.length - 1].split('.')[0];
     startQuiz();
+  } else if (target.classList.contains('score-link-block') || target.closest('.score-link-block')) {
+    let tmpArr = target.closest('.category-cover').style.backgroundImage.split('/');
+    currentCategory = +tmpArr[tmpArr.length - 1].split('.')[0];
+    const catItemsList = [...categoriesItems];
+    const catNum = catItemsList.indexOf(target.closest('.category-item'));
+    infoResultTitle.textContent = target.closest('.category-item').querySelector('.category-item-title').textContent;
+    infoResultCounter.textContent = target.closest('.category-item').querySelector('.category-counter').textContent;
+    getResultInfo();
+    addResultImges(currentCategory, catNum);
+    categoryPage.classList.toggle('hidden');
+    categoryResultPage.classList.toggle('hidden');
+    previosPage = categoryPage;
+    currentPage = categoryResultPage;
   }
 });
 
@@ -310,6 +409,7 @@ function selectDoneCat(i, count) {
   itemCounter.classList.remove('hidden');
   itemCounter.textContent = `${count} / 10`;
   item.querySelector('.done').classList.remove('hidden');
+  item.querySelector('.score-link-block').classList.remove('hidden');
 }
 
 function loadCatResults() {
@@ -636,6 +736,7 @@ function categoryDone() {
   itemCounter.classList.remove('hidden');
   itemCounter.textContent = `${categoryCounter} / 10`;
   item.querySelector('.done').classList.remove('hidden');
+  item.querySelector('.score-link-block').classList.remove('hidden');
   if (retryFlag == 1) {
     checkLS(index);
   }
