@@ -49,8 +49,6 @@ const settingsButton = startPage.querySelector('.settings-button'),
       pictureQuizBtn = startPage.querySelector('.picture'),
       artistQuizBtn = startPage.querySelector('.artist');
 
-console.log("pictureQuizBtn")
-
 settingsButton.addEventListener('click', () => {
   startPage.classList.toggle('hidden');
   settingsPage.classList.toggle('hidden');
@@ -59,7 +57,6 @@ settingsButton.addEventListener('click', () => {
 });
 
 pictureQuizBtn.addEventListener('click', () => {
-  console.log('hello')
   flag = 0;
   loadArr = [];
   loadCatResults();
@@ -241,7 +238,8 @@ function setCover(urlStr, index) {
   img.src = urlStr;
   img.onload = () => {
     categoriesCovers[index].style.backgroundImage = `url(${img.src})`;
-    categoriesCovers[index].style.backgroundSize = 'cover';
+    categoriesCovers[index].style.backgroundSize = 'contain';
+    categoriesCovers[index].style.backgroundRepeat = 'no-repeat';
     categoriesCovers[index].style.transition = 'background-image 0.5s ease-in-out';
     categoriesCovers[index].style.cursor = 'pointer';
   };
@@ -309,7 +307,8 @@ function setResultsCovers(urlStr, i, arr) {
     } else {
       resultItems[i].style.backgroundImage = `url(${img.src})`;
     }
-    resultItems[i].style.backgroundSize = 'cover';
+    resultItems[i].style.backgroundSize = 'contain';
+    resultItems[i].style.backgroundRepeat = 'no-repeat';
     resultItems[i].style.cursor = 'pointer';
   };
 }
@@ -330,7 +329,8 @@ function addInfo (index) {
   img.src = urlStr;
   img.onload = () => {
     infoImg.style.backgroundImage = `url(${img.src})`;
-    infoImg.style.backgroundSize = 'cover';
+    infoImg.style.backgroundSize = 'contain';
+    infoImg.style.backgroundRepeat = 'no-repeat';
   };
   textsInfoPopup[0].textContent = resultData[index].name;
   textsInfoPopup[1].textContent = resultData[index].author;
@@ -582,7 +582,8 @@ function selectQuestionPicture () {
   img.onload = () => {
     questionImg.style.backgroundImage = `url(${img.src})`;
     answerImg.style.backgroundImage = `url(${img.src})`;
-    answerImg.style.backgroundSize = 'cover';
+    answerImg.style.backgroundSize = 'contain';
+    answerImg.style.backgroundRepeat = 'no-repeat';
   };
 }
 
@@ -598,9 +599,7 @@ function contains(arr, elem) {
 function getAnswer(ctg, check) {
   let x = getRandomNum();
   let newAnswer;
-  //
     newAnswer = authorsArr[x];
-  /*} }*/
   if (contains(check, newAnswer)) {
     getAnswer();
   } else {
@@ -644,14 +643,12 @@ function selectAnswersPictures () {
     getAnswer('art', checkArr);
   }
   answersArr = shuffle(answersArr);
-  console.log('answersArr = ', answersArr);
-  console.log('rightAns = ', rightAns);
   for (let i = 0; i < 4; i++) {
     const img = new Image();
     img.src = answersArr[i];
     img.onload = () => {
       answersImages[i].style.backgroundImage = `url(${img.src})`;
-      answersImages[i].style.backgroundSize = `cover`;
+      answersImages[i].style.backgroundSize = `contain`;
     };
   }
   const img = new Image();
