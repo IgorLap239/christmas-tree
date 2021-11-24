@@ -595,26 +595,31 @@ function contains(arr, elem) {
   return false;
 }
 
-function getAnswer(ctg) {
+function getAnswer(ctg, check) {
   let x = getRandomNum();
   let newAnswer;
-  if (ctg == 'pic') {
+  //
     newAnswer = authorsArr[x];
-  } else if (ctg == 'art') {
-    newAnswer = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${x}.webp`;
-  }
-  if (contains(answersArr, newAnswer)) {
+  /*} }*/
+  if (contains(check, newAnswer)) {
     getAnswer();
   } else {
+    if (ctg == 'pic') {
     answersArr.push(newAnswer);
+    } else if (ctg == 'art') {
+      newAnswer = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${x}.webp`;
+      answersArr.push(newAnswer);
+    }
   }
 }
 
 function addAnswers() {
+  let checkArr = [];
+  checkArr.push(data[currentCategory].author);
   rightAns = data[currentCategory].author;
   answersArr.push(rightAns);
   for (let j = 0; j < 3; j++) {
-    getAnswer('pic');
+    getAnswer('pic', checkArr);
   }
   answersArr = shuffle(answersArr);
   for (let i = 0; i < 4; i++) {
@@ -631,10 +636,12 @@ const answersImages = artistQuiz.querySelectorAll('.answer-img');
 const questionText = artistQuiz.querySelector('.question-text');
 
 function selectAnswersPictures () {
+  let checkArr = []
+  checkArr.push(data[currentCategory].author);
   rightAns = `https://raw.githubusercontent.com/IgorLap239/image-data/master/img/${data[currentCategory].imageNum}.webp`;
   answersArr.push(rightAns);
   for (let j = 0; j < 3; j++) {
-    getAnswer('art');
+    getAnswer('art', checkArr);
   }
   answersArr = shuffle(answersArr);
   console.log('answersArr = ', answersArr);
