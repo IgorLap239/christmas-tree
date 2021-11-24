@@ -373,12 +373,12 @@ categoryPage.addEventListener('click', () => {
     let tmpArr = target.style.backgroundImage.split('/');
     currentCategory = tmpArr[tmpArr.length - 1].split('.')[0];
     startQuiz();
-  } else if (target.classList.contains('retry')) {
+  } else if (target.classList.contains('retry') || target.closest('.retry')) {
     retryFlag = 1;
     let tmpArr = target.closest('.category-cover').style.backgroundImage.split('/');
     currentCategory = tmpArr[tmpArr.length - 1].split('.')[0];
     startQuiz();
-  } else if (target.classList.contains('score-link-block') || target.closest('.score-link-block')) {
+  } else if (target.classList.contains('score-link-block') || target.closest('.score-link')) {
     let tmpArr = target.closest('.category-cover').style.backgroundImage.split('/');
     currentCategory = +tmpArr[tmpArr.length - 1].split('.')[0];
     const catItemsList = [...categoriesItems];
