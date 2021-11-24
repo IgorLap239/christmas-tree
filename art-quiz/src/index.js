@@ -49,6 +49,8 @@ const settingsButton = startPage.querySelector('.settings-button'),
       pictureQuizBtn = startPage.querySelector('.picture'),
       artistQuizBtn = startPage.querySelector('.artist');
 
+console.log("pictureQuizBtn")
+
 settingsButton.addEventListener('click', () => {
   startPage.classList.toggle('hidden');
   settingsPage.classList.toggle('hidden');
@@ -57,6 +59,7 @@ settingsButton.addEventListener('click', () => {
 });
 
 pictureQuizBtn.addEventListener('click', () => {
+  console.log('hello')
   flag = 0;
   loadArr = [];
   loadCatResults();
@@ -491,7 +494,7 @@ async function getInfo() {
       addAnswers();
     } else {
       selectTimer = artistQuiz.querySelector('.current-time');
-      timerInput = pictureQuiz.querySelector('.time-range');
+      timerInput = artistQuiz.querySelector('.time-range');
       if (timerFlag == 1)
         startTimer();
       selectAnswersPictures();
@@ -515,7 +518,7 @@ function showAnswer (event) {
         clearInterval(timerUse);
       }
       answersArr = [];
-      if (event.target.textContent === rightAns) {
+      if (event.target.textContent === rightAns || event.target.style.backgroundImage === `url("${rightAns}")`) {
         contentPopup.classList.add('right');
         playAudio(1);
         categoryCounter++;
@@ -584,7 +587,7 @@ function selectQuestionPicture () {
 }
 
 function contains(arr, elem) {
-  for (var i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i++) {
     if (arr[i] === elem) {
       return true;
     }
@@ -634,6 +637,8 @@ function selectAnswersPictures () {
     getAnswer('art');
   }
   answersArr = shuffle(answersArr);
+  console.log('answersArr = ', answersArr);
+  console.log('rightAns = ', rightAns);
   for (let i = 0; i < 4; i++) {
     const img = new Image();
     img.src = answersArr[i];
