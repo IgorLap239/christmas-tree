@@ -9,7 +9,8 @@ const audioLS = 'audio',
       timerLS = 'timer',
       timeLS = 'time',
       picResLS = 'picRes',
-      artResLS = 'artRes';
+      artResLS = 'artRes',
+      audioVolumeLS = 'audioVolume';
 const startPage = document.querySelector('.start-page-wrapper'),
       settingsPage = document.querySelector('.settings-wrapper'),
       categoryPage = document.querySelector('.category-page-wrapper'),
@@ -18,6 +19,7 @@ const startPage = document.querySelector('.start-page-wrapper'),
       volumeInput = settingsPage.querySelector('.volume-range');
 
 let playTime = timeInput.value;
+let audioVolume = 0;
 
 /*for save categoris resulte to local storage*/
 let categoryRightAnswersArr = [];
@@ -38,6 +40,7 @@ function playAudio(index) {
         audio.src = './src/audio/round-done.mp3';
         break;
     }
+    audio.volume = audioVolume;
     audio.play();
   }
 };
@@ -94,17 +97,32 @@ volumeOffBtn.addEventListener('click', () => {
   if (audioFlag === 1) {
     audioFlag = 0;
     volumeInput.value = 0;
-    volumeInput.style.backgroundColor = '#FFFFFF';
+    audioVolume = volumeInput.value;
+    volumeInput.style.background = '#FFFFFF';
   }
 });
 
 volumeOnBtn.addEventListener('click', () => {
   if (audioFlag === 0) {
     audioFlag = 1;
-    volumeInput.value = 1;
-    volumeInput.style.backgroundColor = '#710707';
+    volumeInput.value = audioVolume;
+    volumeInput.style.background = '#710707';
   }
 });
+
+function setVolume() {
+  audioVolume = volumeInput.value;
+  volumeInput.style.background = `linear-gradient(to right, #710707 0%, #710707 ${audioVolume * 100}%, #c4c4c4 ${audioVolume}%, #c4c4c4 100%)`;
+  if (audioVolume == 0) {
+    audioFlag = 0;
+  } else {
+    audioFlag = 1;
+  }
+}
+
+volumeInput.addEventListener('mousemove', setVolume);
+volumeInput.addEventListener('change', setVolume);
+
 
 function addTimer() {
   document.querySelectorAll('.question-timer').forEach((e) => {
@@ -164,6 +182,7 @@ defaultBtn.addEventListener('click', () => {
 
 function saveSettings() {
   localStorage.setItem(audioLS, audioFlag);
+  localStorage.setItem(audioVolumeLS, volumeInput.value);
   localStorage.setItem(timerLS, timerFlag);
   localStorage.setItem(timeLS, timeInput.value);
 };
@@ -173,6 +192,7 @@ function loadSettings(){
     audioFlag = +localStorage.getItem(audioLS);
     timerFlag = +localStorage.getItem(timerLS);
     playTime = +localStorage.getItem(timeLS);
+    audioVolume = +localStorage.getItem(audioVolumeLS);
     timeInput.value = playTime;
     document.querySelectorAll('.current-time').forEach((e) => {
       e.textContent = timeInput.value;
@@ -187,10 +207,11 @@ function loadSettings(){
     } else {
       removeTimer();
     }
-    if (audioFlag == 1) {
-      volumeInput.value = 1;
+    if (audioFlag == 1 && audioVolume != 0) {
+      volumeInput.value = audioVolume;
       volumeInput.style.backgroundColor = '#710707';
     } else {
+      audioVolume = 0;
       volumeInput.value = 0;
       volumeInput.style.backgroundColor = '#FFFFFF';
     }
