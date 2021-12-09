@@ -14,7 +14,7 @@ export type Text = {
   content: string;
   description: string;
   publishedAt: string;
-  source: string;
+  source: {id: string, name: string};
   title: string;
   url: string;
   urlToImage: string;
@@ -30,18 +30,11 @@ export type Article = {
   url: string;
 }
 
-/*export interface DataObj {
-  articles: Array<Text>;
-  status: string;
-  totalResults: number;
-}*/
-
 export type CallbackFunc<T> = (data: T) => void;
 
 export type TUrlOptions = {
   [prop: string]: string;
 }
-
 export interface OptionsLoad {
   [key: string]: string;
 }
