@@ -1,6 +1,7 @@
 import { CallbackFunc } from '../interfaces'
 import { TUrlOptions } from '../interfaces'
-import { DataObj } from '../interfaces'
+import { DataNews } from '../interfaces'
+import { DataSources } from '../interfaces'
 class Loader {
     baseLink: string;
     options: object;
@@ -11,7 +12,7 @@ class Loader {
 
     getResp(
         { endpoint, options = {} }: {endpoint: string, options?: Record<string, never>},
-        callback: CallbackFunc<DataObj> = () => {
+        callback: CallbackFunc<DataNews | DataSources> = () => {
             console.error('No callback for GET response');
         }
     ): void {
@@ -39,11 +40,11 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: string, endpoint: string, callback: CallbackFunc<DataObj>, options: Record<string, never>) {
+    load(method: string, endpoint: string, callback: CallbackFunc<DataNews | DataSources>, options: Record<string, never>) {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res: Response) => res.json())
-            .then((data: DataObj) => callback(data))
+            .then((data:DataNews | DataSources) => callback(data))
             .catch((err) => console.error(err));
     }
 }
