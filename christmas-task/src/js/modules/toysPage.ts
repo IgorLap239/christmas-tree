@@ -1,4 +1,6 @@
 import ToysCards from './toysCards';
+import RangeSlider from './noUiSlider';
+import Filters from './filters';
 
 class ToysPage {
   static render() {
@@ -71,8 +73,10 @@ class ToysPage {
       </div>`;
     fragment.append(mainPageContainer);
     footer.before(fragment);
+    RangeSlider.createCountSlider();
+    RangeSlider.createYearSlider();
     ToysCards.render();
-    ToysCards.filter();
+    Filters.filter();
   }
 
   static remove() {

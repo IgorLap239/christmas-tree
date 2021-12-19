@@ -1,4 +1,4 @@
-export type Filters = {
+export type Filter = {
   shape: Array<string>;
   color: Array<string>;
   size: Array<string>;

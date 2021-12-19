@@ -3,6 +3,7 @@
   "description": "My new js application",
   "private": true,
   "name": "christmas-task",
+  "type": "module",
   "scripts": {
     "start": "webpack serve --env development",
     "build": "webpack"
@@ -26,5 +27,8 @@
     "webpack-cli": "^4.9.0",
     "webpack-dev-server": "^4.3.1",
     "webpack-remove-empty-scripts": "^0.7.1"
+  },
+  "dependencies": {
+    "nouislider": "^15.5.0"
   }
 }
