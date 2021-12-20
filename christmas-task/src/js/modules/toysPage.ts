@@ -1,6 +1,7 @@
 import ToysCards from './toysCards';
 import RangeSlider from './noUiSlider';
 import Filters from './filters';
+import Favorites from './favorites';
 
 class ToysPage {
   static render() {
@@ -77,6 +78,7 @@ class ToysPage {
     RangeSlider.createYearSlider();
     ToysCards.render();
     Filters.filter();
+    Favorites.setFavoriteItem();
   }
 
   static remove() {
