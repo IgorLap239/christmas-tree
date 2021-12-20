@@ -1,11 +1,12 @@
-import noUiSlider from 'nouislider';
+import noUiSlider, { target } from 'nouislider';
 
 class RangeSlider {
   static createCountSlider() {
-    const countSlider = document.querySelector('.count-slider') as HTMLElement;
+    const countSlider = <target>document.querySelector('.count-slider');
     noUiSlider.create(countSlider, {
       start: [1, 12],
       connect: true,
+      step: 1,
       range: {
         min: 1,
         max: 12,
@@ -18,6 +19,7 @@ class RangeSlider {
     noUiSlider.create(yearSlider, {
       start: [1940, 2020],
       connect: true,
+      step: 10,
       range: {
         min: 1940,
         max: 2020,

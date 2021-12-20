@@ -44,9 +44,9 @@ class ToysPage {
               <div class="count">
                 <span class="control-span">Количество экземпляров:</span> 
                 <div class="count-slider-container">
-                  <output class="slider-output">1</output>
+                  <output class="slider-output"></output>
                   <div class="count-slider"></div>
-                  <output class="slider-output">12</output>
+                  <output class="slider-output"></output>
                 </div>
               </div>
               <div class="year">

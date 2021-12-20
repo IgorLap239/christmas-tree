@@ -2,8 +2,8 @@ export type Filter = {
   shape: Array<string>;
   color: Array<string>;
   size: Array<string>;
-  year: Array<string>;
-  count: Array<string>;
+  year: Array<number>;
+  count: Array<number>;
 };
 
 export type Data = {

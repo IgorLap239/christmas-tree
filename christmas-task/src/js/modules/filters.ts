@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+import { target, API } from 'nouislider';
 import data from '../data';
 import { Filter, Data } from '../interfaces';
 import ToysCards from './toysCards';
@@ -35,9 +36,10 @@ class Filters {
     }
   }
 
-  static countFilter(dataElement: Data, countFilters: Array<string>) {
+  static countFilter(dataElement: Data, countFilters: Array<number>) {
     if (countFilters.length !== 0) {
-      if (countFilters.indexOf(dataElement.count) !== -1) {
+      if (countFilters[0] <= Number(dataElement.count)
+      && countFilters[1] >= Number(dataElement.count)) {
         return dataElement;
       }
     } else {
@@ -45,9 +47,10 @@ class Filters {
     }
   }
 
-  static yearFilter(dataElement: Data, yearFilters: Array<string>) {
+  static yearFilter(dataElement: Data, yearFilters: Array<number>) {
     if (yearFilters.length !== 0) {
-      if (yearFilters.indexOf(dataElement.year) !== -1) {
+      if (yearFilters[0] <= Number(dataElement.year)
+      && yearFilters[1] >= Number(dataElement.year)) {
         return dataElement;
       }
     } else {
@@ -57,6 +60,10 @@ class Filters {
 
   static filter() {
     const filtersBlock = document.querySelector('.filters') as HTMLElement;
+    const countSlider = <target>document.querySelector('.count-slider');
+    const yearSlider = <target>document.querySelector('.year-slider');
+    const countOutputs = document.querySelectorAll<HTMLInputElement>('.count .slider-output');
+    const yearsOutputs = document.querySelectorAll<HTMLInputElement>('.year .slider-output');
     const activeFilters: Filter = {
       shape: [],
       color: [],
@@ -65,23 +72,53 @@ class Filters {
       count: [],
     };
     filtersBlock.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.classList.contains('filter-btn')) {
-        const filterName: string = (target.parentElement as HTMLElement).className;
-        if (!target.classList.contains('active')) {
-          activeFilters[filterName].push(target.dataset.filter);
+      const targ = e.target as HTMLElement;
+      if (targ.classList.contains('filter-btn')) {
+        const filterName: string = (targ.parentElement as HTMLElement).className;
+        if (!targ.classList.contains('active')) {
+          activeFilters[filterName].push(targ.dataset.filter);
         } else {
           activeFilters[filterName].splice(activeFilters[filterName]
-            .indexOf(target.dataset.filter), 1);
+            .indexOf(targ.dataset.filter), 1);
         }
-        target.classList.toggle('active');
+        targ.classList.toggle('active');
         const newData = data.filter((el) => this.colorFilter(el, activeFilters.color)
           && this.shapeFilter(el, activeFilters.shape)
+          && this.countFilter(el, activeFilters.count)
+          && this.yearFilter(el, activeFilters.year)
           && this.sizeFilter(el, activeFilters.size));
         this.clearToys();
         ToysCards.render(newData);
         LocalStorage.saveData(newData, activeFilters);
       }
+    });
+    (<API>countSlider.noUiSlider).on('update', (values: unknown) => {
+      for (let i: number = 0; i < 2; i += 1) {
+        countOutputs[i].value = Math.round((values as Array<number>)[i]).toString();
+      }
+      activeFilters.count = (values as Array<number>);
+      const newData = data.filter((el) => this.colorFilter(el, activeFilters.color)
+        && this.shapeFilter(el, activeFilters.shape)
+        && this.countFilter(el, activeFilters.count)
+        && this.yearFilter(el, activeFilters.year)
+        && this.sizeFilter(el, activeFilters.size));
+      this.clearToys();
+      ToysCards.render(newData);
+      LocalStorage.saveData(newData, activeFilters);
+    });
+    (<API>yearSlider.noUiSlider).on('update', (values: unknown) => {
+      for (let i: number = 0; i < 2; i += 1) {
+        yearsOutputs[i].value = Math.round((values as Array<number>)[i]).toString();
+      }
+      activeFilters.year = (values as Array<number>);
+      const newData = data.filter((el) => this.colorFilter(el, activeFilters.color)
+        && this.shapeFilter(el, activeFilters.shape)
+        && this.countFilter(el, activeFilters.count)
+        && this.yearFilter(el, activeFilters.year)
+        && this.sizeFilter(el, activeFilters.size));
+      this.clearToys();
+      ToysCards.render(newData);
+      LocalStorage.saveData(newData, activeFilters);
     });
   }
 
@@ -89,10 +126,9 @@ class Filters {
     const allCards = document.querySelectorAll<HTMLElement>('.card');
     allCards.forEach((e) => e.remove());
   }
+  /* static clearFilter() {
 
-  static clearFilter() {
-
-  }
+  } */
 }
 
 export default Filters;

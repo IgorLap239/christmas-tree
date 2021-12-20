@@ -3,7 +3,6 @@
   "description": "My new js application",
   "private": true,
   "name": "christmas-task",
-  "type": "module",
   "scripts": {
     "start": "webpack serve --env development",
     "build": "webpack"
