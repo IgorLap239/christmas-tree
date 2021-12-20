@@ -58,8 +58,31 @@ class Filters {
     }
   }
 
+  static favoriteFilter(dataElement: Data, favoriteFilter: boolean) {
+    if (favoriteFilter === true) {
+      if (dataElement.favorite === favoriteFilter) {
+        return dataElement;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  static useFilters(filters) {
+    const newData = data.filter((el) => this.colorFilter(el, filters.color)
+        && this.shapeFilter(el, filters.shape)
+        && this.countFilter(el, filters.count)
+        && this.yearFilter(el, filters.year)
+        && this.favoriteFilter(el, filters.favorite)
+        && this.sizeFilter(el, filters.size));
+    this.clearToys();
+    ToysCards.render(newData);
+    LocalStorage.saveData(newData, filters);
+  }
+
   static filter() {
     const filtersBlock = document.querySelector('.filters') as HTMLElement;
+    const favoriteFilterCheck = filtersBlock.querySelector('.favorite-input') as HTMLInputElement;
     const countSlider = <target>document.querySelector('.count-slider');
     const yearSlider = <target>document.querySelector('.year-slider');
     const countOutputs = document.querySelectorAll<HTMLInputElement>('.count .slider-output');
@@ -70,8 +93,9 @@ class Filters {
       size: [],
       year: [],
       count: [],
+      favorite: false,
     };
-    filtersBlock.addEventListener('click', (e) => {
+    filtersBlock.addEventListener('click', (e: Event) => {
       const targ = e.target as HTMLElement;
       if (targ.classList.contains('filter-btn')) {
         const filterName: string = (targ.parentElement as HTMLElement).className;
@@ -82,43 +106,30 @@ class Filters {
             .indexOf(targ.dataset.filter), 1);
         }
         targ.classList.toggle('active');
-        const newData = data.filter((el) => this.colorFilter(el, activeFilters.color)
-          && this.shapeFilter(el, activeFilters.shape)
-          && this.countFilter(el, activeFilters.count)
-          && this.yearFilter(el, activeFilters.year)
-          && this.sizeFilter(el, activeFilters.size));
-        this.clearToys();
-        ToysCards.render(newData);
-        LocalStorage.saveData(newData, activeFilters);
+        this.useFilters(activeFilters);
       }
+    });
+    favoriteFilterCheck.addEventListener('change', () => {
+      if (favoriteFilterCheck.checked) {
+        activeFilters.favorite = true;
+      } else {
+        activeFilters.favorite = false;
+      }
+      this.useFilters(activeFilters);
     });
     (<API>countSlider.noUiSlider).on('update', (values: unknown) => {
       for (let i: number = 0; i < 2; i += 1) {
         countOutputs[i].value = Math.round((values as Array<number>)[i]).toString();
       }
       activeFilters.count = (values as Array<number>);
-      const newData = data.filter((el) => this.colorFilter(el, activeFilters.color)
-        && this.shapeFilter(el, activeFilters.shape)
-        && this.countFilter(el, activeFilters.count)
-        && this.yearFilter(el, activeFilters.year)
-        && this.sizeFilter(el, activeFilters.size));
-      this.clearToys();
-      ToysCards.render(newData);
-      LocalStorage.saveData(newData, activeFilters);
+      this.useFilters(activeFilters);
     });
     (<API>yearSlider.noUiSlider).on('update', (values: unknown) => {
       for (let i: number = 0; i < 2; i += 1) {
         yearsOutputs[i].value = Math.round((values as Array<number>)[i]).toString();
       }
       activeFilters.year = (values as Array<number>);
-      const newData = data.filter((el) => this.colorFilter(el, activeFilters.color)
-        && this.shapeFilter(el, activeFilters.shape)
-        && this.countFilter(el, activeFilters.count)
-        && this.yearFilter(el, activeFilters.year)
-        && this.sizeFilter(el, activeFilters.size));
-      this.clearToys();
-      ToysCards.render(newData);
-      LocalStorage.saveData(newData, activeFilters);
+      this.useFilters(activeFilters);
     });
   }
 

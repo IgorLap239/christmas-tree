@@ -4,6 +4,7 @@ export type Filter = {
   size: Array<string>;
   year: Array<number>;
   count: Array<number>;
+  favorite: boolean;
 };
 
 export type Data = {
