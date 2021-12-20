@@ -13,6 +13,7 @@ class ToysCards {
         favoriteText = 'Да';
       }
       card.classList.add('card');
+      card.dataset.number = e.num;
       card.innerHTML = `
       <h2 class="card-title">${e.name}</h2>
       <img class="card-img" src="assets/toys/${e.num}.png" alt="toy">

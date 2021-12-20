@@ -77,7 +77,24 @@ class Filters {
         && this.sizeFilter(el, filters.size));
     this.clearToys();
     ToysCards.render(newData);
-    LocalStorage.saveData(newData, filters);
+    LocalStorage.loadFavoriteCardsStyles();
+    LocalStorage.saveData(newData);
+    LocalStorage.saveFilters(filters);
+  }
+
+  static addFilters() {
+    if (LocalStorage.loadFilters()) {
+      return LocalStorage.loadFilters();
+    }
+    const activeFilters: Filter = {
+      shape: [],
+      color: [],
+      size: [],
+      year: [],
+      count: [],
+      favorite: false,
+    };
+    return activeFilters;
   }
 
   static filter() {
@@ -87,25 +104,19 @@ class Filters {
     const yearSlider = <target>document.querySelector('.year-slider');
     const countOutputs = document.querySelectorAll<HTMLInputElement>('.count .slider-output');
     const yearsOutputs = document.querySelectorAll<HTMLInputElement>('.year .slider-output');
-    const activeFilters: Filter = {
-      shape: [],
-      color: [],
-      size: [],
-      year: [],
-      count: [],
-      favorite: false,
-    };
+    const activeFilters = this.addFilters();
     filtersBlock.addEventListener('click', (e: Event) => {
       const targ = e.target as HTMLElement;
       if (targ.classList.contains('filter-btn')) {
         const filterName: string = (targ.parentElement as HTMLElement).className;
         if (!targ.classList.contains('active')) {
+          targ.classList.add('active');
           activeFilters[filterName].push(targ.dataset.filter);
         } else {
           activeFilters[filterName].splice(activeFilters[filterName]
             .indexOf(targ.dataset.filter), 1);
+          targ.classList.remove('active');
         }
-        targ.classList.toggle('active');
         this.useFilters(activeFilters);
       }
     });
@@ -115,6 +126,7 @@ class Filters {
       } else {
         activeFilters.favorite = false;
       }
+      LocalStorage.saveFavoriteFilterStatus(favoriteFilterCheck.checked);
       this.useFilters(activeFilters);
     });
     (<API>countSlider.noUiSlider).on('update', (values: unknown) => {
