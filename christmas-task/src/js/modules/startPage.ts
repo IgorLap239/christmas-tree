@@ -14,8 +14,12 @@ class StartPage {
     fragment.append(startPageContainer);
     footer.before(fragment);
     const startButton = startPageContainer.querySelector('.switch-start-page') as HTMLElement;
+    const searchField = document.querySelector('.search') as HTMLInputElement;
+    const favoritesField = document.querySelector('.select') as HTMLElement;
     startButton.addEventListener('click', () => {
       this.remove();
+      searchField.style.display = 'block';
+      favoritesField.style.display = 'block';
       ToysPage.render();
     });
   }

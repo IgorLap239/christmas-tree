@@ -4,6 +4,7 @@ import Filters from './filters';
 import Favorites from './favorites';
 import Sorted from './sort';
 import LocalStorage from './localStorage';
+import Search from './search';
 
 class ToysPage {
   static render() {
@@ -81,6 +82,8 @@ class ToysPage {
     ToysCards.render();
     LocalStorage.loadSavedSettings();
     Filters.filter();
+    Search.init();
+    Search.useSearch();
     LocalStorage.loadFavoriteCardsStyles();
     Favorites.setFavoriteItem();
     Sorted.sortCards();

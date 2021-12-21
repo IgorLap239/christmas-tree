@@ -94,6 +94,7 @@ body {
 }
 
 .search {
+  position: relative;
   width: 380px;
   height: 40px;
   padding: 5px 25px;
@@ -108,11 +109,23 @@ body {
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: 330px center;
-  backdrop-filter: blur(6px);  
+  backdrop-filter: blur(6px);
+  display: none;
 }
 
 .search {
   outline: 0;
+}
+
+.clear {
+  display: none;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+}
+
+.clear svg {
+  cursor: pointer;
 }
 
 .select {
@@ -123,6 +136,7 @@ body {
   background-position: left -8px;
   background-repeat: no-repeat;
   transition: .3s;
+  display: none;
 }
   
 .select span {
@@ -319,6 +333,10 @@ body {
 
 .card-description p span {
   padding-left: 7px;
+}
+
+.hide {
+  display: none;
 }
 
 .ribbon {

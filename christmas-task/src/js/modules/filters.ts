@@ -68,6 +68,24 @@ class Filters {
     }
   }
 
+  /* static searchFilter() {
+    const searchField = document.querySelector('.search') as HTMLInputElement;
+    searchField.addEventListener('input', () => {
+      if (String(searchField.textContent).length > 0) {
+      }
+    });
+    searchField.addEventListener('focus', () => {
+      searchField.style.background = 'none';
+    });
+    searchField.addEventListener('blur', () => {
+      searchField.style.backgroundColor = 'rgba(31, 112, 127, .3)';
+      searchField.style.backgroundImage = 'url("../assets/svg/search.svg")';
+      searchField.style.backgroundSize = '20px';
+      searchField.style.backgroundRepeat = 'no-repeat';
+      searchField.style.backgroundPosition = '330px center';
+    });
+  } */
+
   static useFilters(filters) {
     const newData = data.filter((el) => this.colorFilter(el, filters.color)
         && this.shapeFilter(el, filters.shape)
