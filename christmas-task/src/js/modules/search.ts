@@ -44,7 +44,7 @@ class Search {
     });
     searchField.addEventListener('blur', () => {
       searchField.style.backgroundColor = 'rgba(31, 112, 127, .3)';
-      searchField.style.backgroundImage = 'url("../assets/svg/search.svg")';
+      searchField.style.backgroundImage = 'url("./assets/svg/search.svg")';
       searchField.style.backgroundSize = '20px';
       searchField.style.backgroundRepeat = 'no-repeat';
       searchField.style.backgroundPosition = '330px center';

@@ -28,21 +28,6 @@ class StartPage {
     const startPageContainer = document.querySelector('.start-page') as HTMLElement;
     startPageContainer.remove();
   }
-
-  /* static pageControl() {
-    const startPageContainer = document.querySelector('.start-page') as HTMLElement;
-    const startButton = startPageContainer.querySelector('.switch-start-page') as HTMLElement;
-    const mainPageLink = document.querySelector('.switch-main-page') as HTMLElement;
-    startButton.addEventListener('click', () => {
-      console.log('trget = ', event?.target);
-      startPageContainer.remove();
-      ToysPage.render();
-    });
-    mainPageLink.addEventListener('click', () => {
-      startPageContainer.remove();
-      ToysPage.render();
-    });
-  } */
 }
 
 export default StartPage;
