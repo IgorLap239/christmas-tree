@@ -1,5 +1,6 @@
 import { target, API } from 'nouislider';
 import data from '../data';
+import Sorted from './sort';
 
 class LocalStorage {
   static saveData(filteredData) {
@@ -54,6 +55,14 @@ class LocalStorage {
     return false;
   }
 
+  static loadSortValue() {
+    const sortOrder = localStorage.getItem('sort');
+    if (sortOrder !== null) {
+      return JSON.parse(sortOrder);
+    }
+    return false;
+  }
+
   static loadSavedSettings() {
     const filtersBlock = document.querySelector('.filters') as HTMLElement;
     const rangeFiltersBlock = document.querySelector('.range') as HTMLElement;
@@ -97,6 +106,15 @@ class LocalStorage {
           cards[i].classList.add('active');
         }
       }
+    }
+  }
+
+  static loadSortedOrder() {
+    if (this.loadSortValue()) {
+      const sortOptions: Array<string> = ['sort-name-max', 'sort-name-min', 'sort-count-max', 'sort-count-min'];
+      const sortTypesList = document.querySelector('.sort-select') as HTMLSelectElement;
+      sortTypesList.selectedIndex = Number(this.loadSortValue());
+      Sorted.sortCards(sortOptions[Number(this.loadSortValue())]);
     }
   }
 }

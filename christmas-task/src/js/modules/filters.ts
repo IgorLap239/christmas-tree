@@ -4,6 +4,7 @@ import data from '../data';
 import { Filter, Data } from '../interfaces';
 import ToysCards from './toysCards';
 import LocalStorage from './localStorage';
+import Sorted from './sort';
 
 class Filters {
   static colorFilter(dataElement: Data, colorFilters: Array<string>) {
@@ -68,25 +69,8 @@ class Filters {
     }
   }
 
-  /* static searchFilter() {
-    const searchField = document.querySelector('.search') as HTMLInputElement;
-    searchField.addEventListener('input', () => {
-      if (String(searchField.textContent).length > 0) {
-      }
-    });
-    searchField.addEventListener('focus', () => {
-      searchField.style.background = 'none';
-    });
-    searchField.addEventListener('blur', () => {
-      searchField.style.backgroundColor = 'rgba(31, 112, 127, .3)';
-      searchField.style.backgroundImage = 'url("../assets/svg/search.svg")';
-      searchField.style.backgroundSize = '20px';
-      searchField.style.backgroundRepeat = 'no-repeat';
-      searchField.style.backgroundPosition = '330px center';
-    });
-  } */
-
   static useFilters(filters) {
+    const sortTypesList = document.querySelector('.sort-select') as HTMLSelectElement;
     const newData = data.filter((el) => this.colorFilter(el, filters.color)
         && this.shapeFilter(el, filters.shape)
         && this.countFilter(el, filters.count)
@@ -94,10 +78,11 @@ class Filters {
         && this.favoriteFilter(el, filters.favorite)
         && this.sizeFilter(el, filters.size));
     this.clearToys();
-    ToysCards.render(newData);
-    LocalStorage.loadFavoriteCardsStyles();
     LocalStorage.saveData(newData);
     LocalStorage.saveFilters(filters);
+    ToysCards.render(newData);
+    Sorted.sortCards(sortTypesList.value);
+    LocalStorage.loadFavoriteCardsStyles();
   }
 
   static addFilters() {
@@ -118,6 +103,7 @@ class Filters {
   static filter() {
     const filtersBlock = document.querySelector('.filters') as HTMLElement;
     const favoriteFilterCheck = filtersBlock.querySelector('.favorite-input') as HTMLInputElement;
+    const favoriteFilterLabel = filtersBlock.querySelector('.favorite-input-label') as HTMLElement;
     const countSlider = <target>document.querySelector('.count-slider');
     const yearSlider = <target>document.querySelector('.year-slider');
     const countOutputs = document.querySelectorAll<HTMLInputElement>('.count .slider-output');
@@ -129,7 +115,9 @@ class Filters {
         const filterName: string = (targ.parentElement as HTMLElement).className;
         if (!targ.classList.contains('active')) {
           targ.classList.add('active');
-          activeFilters[filterName].push(targ.dataset.filter);
+          if (activeFilters[filterName].indexOf(targ.dataset.filter) === -1) {
+            activeFilters[filterName].push(targ.dataset.filter);
+          }
         } else {
           activeFilters[filterName].splice(activeFilters[filterName]
             .indexOf(targ.dataset.filter), 1);
@@ -140,8 +128,10 @@ class Filters {
     });
     favoriteFilterCheck.addEventListener('change', () => {
       if (favoriteFilterCheck.checked) {
+        favoriteFilterLabel.classList.add('check');
         activeFilters.favorite = true;
       } else {
+        favoriteFilterLabel.classList.remove('check');
         activeFilters.favorite = false;
       }
       LocalStorage.saveFavoriteFilterStatus(favoriteFilterCheck.checked);
@@ -167,9 +157,6 @@ class Filters {
     const allCards = document.querySelectorAll<HTMLElement>('.card');
     allCards.forEach((e) => e.remove());
   }
-  /* static clearFilter() {
-
-  } */
 }
 
 export default Filters;

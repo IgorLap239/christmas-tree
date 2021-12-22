@@ -4,17 +4,21 @@ import { Data } from '../interfaces';
 import LocalStorage from './localStorage';
 
 class Sorted {
-  static sortCards() {
+  static sortCards(order) {
+    const sortData = LocalStorage.loadData();
+    const sortType: string = order.split('-')[1];
+    const direction: string = order.split('-')[2];
+    const sortedData: Array<Data> = sortData.sort(this.sortData(sortType, direction));
+    Filters.clearToys();
+    ToysCards.render(sortedData);
+    LocalStorage.saveData(sortedData);
+  }
+
+  static init() {
     const sortTypesList = document.querySelector('.sort-select') as HTMLSelectElement;
     sortTypesList.addEventListener('change', () => {
-      const sortData = LocalStorage.loadData();
-      const sortType: string = sortTypesList.value.split('-')[1];
-      const direction: string = sortTypesList.value.split('-')[2];
-      const sortedData: Array<Data> = sortData.sort(this.sortData(sortType, direction));
-      Filters.clearToys();
-      ToysCards.render(sortedData);
-      LocalStorage.saveData(sortedData);
-      LocalStorage.saveSortValue(sortTypesList.value);
+      this.sortCards(sortTypesList.value);
+      LocalStorage.saveSortValue(sortTypesList.selectedIndex);
     });
   }
 

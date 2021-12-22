@@ -5,6 +5,7 @@ import Favorites from './favorites';
 import Sorted from './sort';
 import LocalStorage from './localStorage';
 import Search from './search';
+import ClearFilters from './clearFilters';
 
 class ToysPage {
   static render() {
@@ -70,7 +71,8 @@ class ToysPage {
                 <option value="sort-count-max">По количеству по возрастанию</option>
                 <option value="sort-count-min">По количеству по убыванию</option>
               </select>
-              <button class="reset">Сброс фильтров</button>
+              <button class="reset reset-filters">Сброс фильтров</button>
+              <button class="reset reset-local">Сброс настроек</button>
             </div>
           </div>
         <div class="card-container"></div>
@@ -82,11 +84,13 @@ class ToysPage {
     ToysCards.render();
     LocalStorage.loadSavedSettings();
     Filters.filter();
+    LocalStorage.loadSortedOrder();
     Search.init();
     Search.useSearch();
     LocalStorage.loadFavoriteCardsStyles();
     Favorites.setFavoriteItem();
-    Sorted.sortCards();
+    Sorted.init();
+    ClearFilters.init();
   }
 
   static remove() {

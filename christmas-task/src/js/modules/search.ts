@@ -28,14 +28,15 @@ class Search {
             (document.querySelector('.search-error') as HTMLElement).remove();
           }
           e.classList.remove('hide');
-          e.style.display = 'flex';
         });
       }
       if (cards.length === (document.querySelectorAll<HTMLElement>('.hide')).length) {
-        const searchError: HTMLElement = document.createElement('p');
-        searchError.textContent = 'По данному запросу игрушек не найдено';
-        searchError.classList.add('search-error');
-        cardContainer.append(searchError);
+        if (!(document.querySelector('.search-error') as HTMLElement)) {
+          const searchError: HTMLElement = document.createElement('p');
+          searchError.textContent = 'По данному запросу игрушек не найдено';
+          searchError.classList.add('search-error');
+          cardContainer.append(searchError);
+        }
       }
     });
     searchField.addEventListener('focus', () => {
