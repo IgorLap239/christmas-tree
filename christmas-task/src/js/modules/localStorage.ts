@@ -1,6 +1,8 @@
 import { target, API } from 'nouislider';
+import { Filter } from '../interfaces';
 import data from '../data';
 import Sorted from './sort';
+import Filters from './filters';
 
 class LocalStorage {
   static saveData(filteredData) {
@@ -116,6 +118,48 @@ class LocalStorage {
       sortTypesList.selectedIndex = Number(this.loadSortValue());
       Sorted.sortCards(sortOptions[Number(this.loadSortValue())]);
     }
+  }
+
+  static clearLocalStorage() {
+    const rangeFiltersBlock = document.querySelector('.range') as HTMLElement;
+    const countSlider = <target>rangeFiltersBlock.querySelector('.count-slider');
+    const yearSlider = <target>rangeFiltersBlock.querySelector('.year-slider');
+    const countOutputs = document.querySelectorAll<HTMLInputElement>('.count .slider-output');
+    const yearsOutputs = document.querySelectorAll<HTMLInputElement>('.year .slider-output');
+    const filtersBlock = document.querySelector('.filters') as HTMLElement;
+    const favoriteFilterCheck = filtersBlock.querySelector('.favorite-input') as HTMLInputElement;
+    const favoriteFilterLabel = filtersBlock.querySelector('.favorite-input-label') as HTMLElement;
+    const filtersButtons = document.querySelectorAll<HTMLElement>('.filter-btn');
+    const clearFilters: Filter = {
+      shape: [],
+      color: [],
+      size: [],
+      year: [1940, 2020],
+      count: [1, 12],
+      favorite: false,
+    };
+    const resetLocalButton = document.querySelector('.reset-local') as HTMLElement;
+    resetLocalButton.addEventListener('click', () => {
+      if (favoriteFilterCheck.checked) {
+        favoriteFilterCheck.checked = false;
+        favoriteFilterLabel.classList.remove('check');
+      }
+      filtersButtons.forEach((e) => {
+        if (e.classList.contains('active')) {
+          e.classList.remove('active');
+        }
+      });
+      (<API>countSlider.noUiSlider).set([1, 12]);
+      countOutputs[0].value = '1';
+      countOutputs[1].value = '12';
+      (<API>yearSlider.noUiSlider).set([1940, 2020]);
+      yearsOutputs[0].value = '1940';
+      yearsOutputs[1].value = '2020';
+      this.saveSortValue(0);
+      this.loadSortedOrder();
+      localStorage.clear();
+      Filters.useFilters(clearFilters);
+    });
   }
 }
 

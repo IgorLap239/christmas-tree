@@ -91,6 +91,7 @@ class ToysPage {
     Favorites.setFavoriteItem();
     Sorted.init();
     ClearFilters.init();
+    LocalStorage.clearLocalStorage();
   }
 
   static remove() {
