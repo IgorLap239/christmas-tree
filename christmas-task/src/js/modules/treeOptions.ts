@@ -40,7 +40,6 @@ class TreeOptions {
     const snowButton = document.querySelector('.snow-control') as HTMLElement;
     let interval: ReturnType<typeof setInterval>;
     let snowfallStatus = false;
-
     snowButton.addEventListener('click', () => {
       snowfallStatus = !snowfallStatus;
       if (snowfallStatus) {
@@ -51,10 +50,28 @@ class TreeOptions {
     });
   }
 
+  static playAudio() {
+    const playButton = document.querySelector('.audio-control') as HTMLElement;
+    const audio = new Audio();
+    audio.src = './assets/audio/audio.mp3';
+    let isPlay = false;
+    playButton.addEventListener('click', () => {
+      audio.volume *= 0.3;
+      if (!isPlay) {
+        audio.play();
+        isPlay = true;
+      } else {
+        audio.pause();
+        isPlay = false;
+      }
+    });
+  }
+
   static init() {
     this.setTree();
     this.backGround();
     this.startSnowfall();
+    this.playAudio();
   }
 }
 
