@@ -864,14 +864,14 @@ output {
 .snow-control {
   width: 40px;
   height: 40px;
-  background-image: url("../assets/icons/snow.png");
+  background-image: url("../assets/svg/snow.svg");
 }
 
 .audio-control {
   width: 40px;
   height: 40px;
   margin-right: 40px;
-  background-image: url("../assets/icons/audio.png");
+  background-image: url("../assets/svg/audio.svg");
 }
 
 .snow-control.active,
