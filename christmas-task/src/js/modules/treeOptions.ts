@@ -1,22 +1,32 @@
+import LocalStorage from './localStorage';
+
 class TreeOptions {
   static setTree() {
     const treeSelectContainer = document.querySelector('.tree-container') as HTMLElement;
     const mainTree = document.querySelector('.main-tree') as HTMLImageElement;
+    if (LocalStorage.loadTree()) {
+      mainTree.src = LocalStorage.loadTree();
+    }
     treeSelectContainer.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('tree')) {
         mainTree.src = `../assets/tree/${target.dataset.tree}.png`;
+        LocalStorage.saveTree(mainTree.src);
       }
     });
   }
 
-  static backGround() {
+  static setBackground() {
     const backgroundSelectContainer = document.querySelector('.bg-container') as HTMLElement;
     const mainTreeContainer = document.querySelector('.main-tree-container') as HTMLElement;
+    if (LocalStorage.loadTreeBackground()) {
+      mainTreeContainer.style.backgroundImage = LocalStorage.loadTreeBackground();
+    }
     backgroundSelectContainer.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('bg')) {
         mainTreeContainer.style.backgroundImage = `url("../assets/bg/${target.dataset.bg}.jpg")`;
+        LocalStorage.saveTreeBackground(`url("../assets/bg/${target.dataset.bg}.jpg")`);
       }
     });
   }
@@ -40,12 +50,21 @@ class TreeOptions {
     const snowButton = document.querySelector('.snow-control') as HTMLElement;
     let interval: ReturnType<typeof setInterval>;
     let snowfallStatus = false;
+    if (LocalStorage.loadSnowfall()) {
+      snowfallStatus = LocalStorage.loadSnowfall();
+      snowButton.classList.add('active');
+      interval = setInterval(this.snowfall, 50);
+    }
     snowButton.addEventListener('click', () => {
       snowfallStatus = !snowfallStatus;
       if (snowfallStatus) {
+        snowButton.classList.add('active');
         interval = setInterval(this.snowfall, 50);
+        LocalStorage.saveSnowfallStatus(snowfallStatus);
       } else {
+        snowButton.classList.remove('active');
         clearInterval(interval);
+        LocalStorage.saveSnowfallStatus(snowfallStatus);
       }
     });
   }
@@ -55,21 +74,33 @@ class TreeOptions {
     const audio = new Audio();
     audio.src = './assets/audio/audio.mp3';
     let isPlay = false;
+    function playLoaded() {
+      isPlay = LocalStorage.loadAudioStatus();
+      audio.play();
+      playButton.classList.add('active');
+      window.removeEventListener('click', playLoaded);
+    }
+    if (LocalStorage.loadAudioStatus()) {
+      window.addEventListener('click', playLoaded);
+    }
     playButton.addEventListener('click', () => {
-      audio.volume *= 0.3;
       if (!isPlay) {
         audio.play();
         isPlay = true;
+        playButton.classList.add('active');
+        LocalStorage.saveAudioStatus(isPlay);
       } else {
         audio.pause();
         isPlay = false;
+        playButton.classList.remove('active');
+        LocalStorage.saveAudioStatus(isPlay);
       }
     });
   }
 
   static init() {
     this.setTree();
-    this.backGround();
+    this.setBackground();
     this.startSnowfall();
     this.playAudio();
   }

@@ -25,6 +25,22 @@ class LocalStorage {
     localStorage.setItem('favoriteCards', JSON.stringify(favoriteCards));
   }
 
+  static saveTree(tree) {
+    localStorage.setItem('tree', JSON.stringify(tree));
+  }
+
+  static saveTreeBackground(background) {
+    localStorage.setItem('treeBackground', JSON.stringify(background));
+  }
+
+  static saveSnowfallStatus(snowfall) {
+    localStorage.setItem('snowfall', JSON.stringify(snowfall));
+  }
+
+  static saveAudioStatus(audioStatus) {
+    localStorage.setItem('audio', JSON.stringify(audioStatus));
+  }
+
   static loadFavoritesCards() {
     const loadedFavoriteCards = localStorage.getItem('favoriteCards');
     if (loadedFavoriteCards !== null) {
@@ -118,6 +134,38 @@ class LocalStorage {
       sortTypesList.selectedIndex = Number(this.loadSortValue());
       Sorted.sortCards(sortOptions[Number(this.loadSortValue())]);
     }
+  }
+
+  static loadTree() {
+    const loadedTree = localStorage.getItem('tree');
+    if (loadedTree !== null) {
+      return JSON.parse(loadedTree);
+    }
+    return false;
+  }
+
+  static loadTreeBackground() {
+    const loadedBackground = localStorage.getItem('treeBackground');
+    if (loadedBackground !== null) {
+      return JSON.parse(loadedBackground);
+    }
+    return false;
+  }
+
+  static loadSnowfall() {
+    const loadedSnowfall = localStorage.getItem('snowfall');
+    if (loadedSnowfall !== null) {
+      return JSON.parse(loadedSnowfall);
+    }
+    return false;
+  }
+
+  static loadAudioStatus() {
+    const loadedAudio = localStorage.getItem('audio');
+    if (loadedAudio !== null) {
+      return JSON.parse(loadedAudio);
+    }
+    return false;
   }
 
   static clearLocalStorage() {

@@ -876,7 +876,7 @@ output {
 
 .snow-control.active,
 .audio-control.active {
-  filter: saturate(1.5) brightness(.8);  
+  filter: saturate(1.5) brightness(.8);
 }
 
 .bg {
