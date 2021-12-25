@@ -1,4 +1,5 @@
 import TreeOptions from './treeOptions';
+import Garland from './garland';
 
 class ChristmasTreePage {
   static render() {
@@ -44,7 +45,7 @@ class ChristmasTreePage {
               <button class="color-btn green-btn" data-color="green"></button>
             </div>
             <div class="onoffswitch">
-              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
               <label class="onoffswitch-label" for="myonoffswitch">
                   <div class="onoffswitch-inner"></div>
                   <div class="onoffswitch-switch"></div>
@@ -54,7 +55,6 @@ class ChristmasTreePage {
         </div>
         <div class="main-tree-container">
           <div class="snowflakes hide"></div>
-          <div class="garland-tree-container"></div>
           <map name="tree-map">
             <area coords="365,699,189,706,113,683,31,608,2,555,2,539,18,437,73,351,106,224,161,134,243,-1,306,75,353,144,399,221,424,359,452,459,496,550,444,664" shape="poly">
           </map>
@@ -89,6 +89,7 @@ class ChristmasTreePage {
     fragment.append(treePageContainer);
     footer.before(fragment);
     TreeOptions.init();
+    Garland.init();
     /* RangeSlider.createYearSlider();
     ToysCards.render();
     LocalStorage.loadSavedSettings();

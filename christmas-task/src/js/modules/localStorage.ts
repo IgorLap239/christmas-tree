@@ -5,6 +5,7 @@ import Sorted from './sort';
 import Filters from './filters';
 
 class LocalStorage {
+  /* save methods */
   static saveData(filteredData) {
     localStorage.setItem('data', JSON.stringify(filteredData));
   }
@@ -41,6 +42,15 @@ class LocalStorage {
     localStorage.setItem('audio', JSON.stringify(audioStatus));
   }
 
+  static saveGarlandColor(color) {
+    localStorage.setItem('garlandColor', JSON.stringify(color));
+  }
+
+  static saveGarlandStatus(garlandStatus) {
+    localStorage.setItem('garlandStatus', JSON.stringify(garlandStatus));
+  }
+
+  /* loads methods */
   static loadFavoritesCards() {
     const loadedFavoriteCards = localStorage.getItem('favoriteCards');
     if (loadedFavoriteCards !== null) {
@@ -168,6 +178,23 @@ class LocalStorage {
     return false;
   }
 
+  static loadGarlandColor() {
+    const loadedGarlandColor = localStorage.getItem('garlandColor');
+    if (loadedGarlandColor !== null) {
+      return JSON.parse(loadedGarlandColor);
+    }
+    return false;
+  }
+
+  static loadGarlandStatus() {
+    const loadedGarland = localStorage.getItem('garlandStatus');
+    if (loadedGarland !== null) {
+      return JSON.parse(loadedGarland);
+    }
+    return false;
+  }
+
+  /* clear methods */
   static clearLocalStorage() {
     const rangeFiltersBlock = document.querySelector('.range') as HTMLElement;
     const countSlider = <target>rangeFiltersBlock.querySelector('.count-slider');
