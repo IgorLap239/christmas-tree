@@ -1,5 +1,6 @@
 import TreeOptions from './treeOptions';
 import Garland from './garland';
+import FavoritesBlock from './favoritesBlock';
 
 class ChristmasTreePage {
   static render() {
@@ -90,6 +91,7 @@ class ChristmasTreePage {
     footer.before(fragment);
     TreeOptions.init();
     Garland.init();
+    FavoritesBlock.render();
     /* RangeSlider.createYearSlider();
     ToysCards.render();
     LocalStorage.loadSavedSettings();
