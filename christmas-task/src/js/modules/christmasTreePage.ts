@@ -1,14 +1,16 @@
 import TreeOptions from './treeOptions';
 import Garland from './garland';
 import FavoritesBlock from './favoritesBlock';
-import DragAndDrop from './dragToTree';
+import DragAndDrop from './dragAndDrop';
 
 class ChristmasTreePage {
   static render() {
     const fragment = document.createDocumentFragment();
     const footer = document.querySelector('.footer') as HTMLElement;
     const treePageContainer = document.createElement('div') as HTMLElement;
+
     treePageContainer.classList.add('page', 'favorites-page');
+
     treePageContainer.innerHTML = `
     <div class="page favorites-page" data-page="favoritesPage">
     <div class="blur">
@@ -65,48 +67,17 @@ class ChristmasTreePage {
         <div class="favorites-aside">
           <div class="favorites-container">
           </div>
-          <div class="favorites-decorate">
-            <div class="favorites-decorate-container">
-              <div class="tree-decorate">
-                <img src="assets/tree/1.png" class="tree-decorate-img" alt="decorate-tree">
-              </div>
-              <div class="tree-decorate">
-                <img src="assets/tree/2.png" class="tree-decorate-img" alt="decorate-tree">
-              </div>
-              <div class="tree-decorate">
-                <img src="assets/tree/3.png" class="tree-decorate-img" alt="decorate-tree">
-              </div>
-              <div class="tree-decorate">
-                <img src="assets/tree/4.png" class="tree-decorate-img" alt="decorate-tree">
-              </div>
-              <div class="tree-decorate">
-                <img src="assets/tree/5.png" class="tree-decorate-img" alt="decorate-tree">
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </div>`;
+
     fragment.append(treePageContainer);
     footer.before(fragment);
     TreeOptions.init();
     Garland.init();
     FavoritesBlock.render();
     DragAndDrop.selectDragToy();
-    // DragFromTree.selectDragToy();
-    /* RangeSlider.createYearSlider();
-    ToysCards.render();
-    LocalStorage.loadSavedSettings();
-    Filters.filter();
-    LocalStorage.loadSortedOrder();
-    Search.init();
-    Search.useSearch();
-    LocalStorage.loadFavoriteCardsStyles();
-    Favorites.setFavoriteItem();
-    Sorted.init();
-    ClearFilters.init();
-    LocalStorage.clearLocalStorage(); */
   }
 
   static remove() {

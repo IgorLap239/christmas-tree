@@ -4,11 +4,14 @@ class TreeOptions {
   static setTree() {
     const treeSelectContainer = document.querySelector('.tree-container') as HTMLElement;
     const mainTree = document.querySelector('.main-tree') as HTMLImageElement;
+
     if (LocalStorage.loadTree()) {
       mainTree.src = LocalStorage.loadTree();
     }
+
     treeSelectContainer.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
+
       if (target.classList.contains('tree')) {
         mainTree.src = `../assets/tree/${target.dataset.tree}.png`;
         LocalStorage.saveTree(mainTree.src);
@@ -19,9 +22,11 @@ class TreeOptions {
   static setBackground() {
     const backgroundSelectContainer = document.querySelector('.bg-container') as HTMLElement;
     const mainTreeContainer = document.querySelector('.main-tree-container') as HTMLElement;
+
     if (LocalStorage.loadTreeBackground()) {
       mainTreeContainer.style.backgroundImage = LocalStorage.loadTreeBackground();
     }
+
     backgroundSelectContainer.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('bg')) {
@@ -50,13 +55,16 @@ class TreeOptions {
     const snowButton = document.querySelector('.snow-control') as HTMLElement;
     let interval: ReturnType<typeof setInterval>;
     let snowfallStatus = false;
+
     if (LocalStorage.loadSnowfall()) {
       snowfallStatus = LocalStorage.loadSnowfall();
       snowButton.classList.add('active');
       interval = setInterval(this.snowfall, 50);
     }
+
     snowButton.addEventListener('click', () => {
       snowfallStatus = !snowfallStatus;
+
       if (snowfallStatus) {
         snowButton.classList.add('active');
         interval = setInterval(this.snowfall, 50);
@@ -74,15 +82,18 @@ class TreeOptions {
     const audio = new Audio();
     audio.src = './assets/audio/audio.mp3';
     let isPlay = false;
+
     function playLoaded() {
       isPlay = LocalStorage.loadAudioStatus();
       audio.play();
       playButton.classList.add('active');
       window.removeEventListener('click', playLoaded);
     }
+
     if (LocalStorage.loadAudioStatus()) {
       window.addEventListener('click', playLoaded);
     }
+
     playButton.addEventListener('click', () => {
       if (!isPlay) {
         audio.play();
