@@ -12,6 +12,8 @@ class FavoritesBlock {
     let favoritesData: number[] = [];
     if (LocalStorage.loadFavoritesCards() && LocalStorage.loadFavoritesCards().length !== 0) {
       favoritesData = LocalStorage.loadFavoritesCards();
+      const favoriteCounter = document.querySelector('.select span') as HTMLElement;
+      favoriteCounter.textContent = LocalStorage.loadFavoritesCards().length;
     } else {
       favoritesData = defaultData;
     }
