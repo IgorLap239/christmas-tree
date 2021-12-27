@@ -1,0 +1,17 @@
+.fa-snowflake-o {
+	color: #fff;
+	position: absolute;
+	top: -20px;
+  z-index: 100;
+	animation: fall linear forwards;
+}
+
+@keyframes fall {
+	to {
+		transform: translateY(105vh);
+	}
+}
+
+.countdown-container {
+	display: flex;
+}
