@@ -38,7 +38,7 @@ class Garland {
       garlandLevel.style.width = `${startPosition}px`;
       garlandLevel.style.height = `${startPosition}px`;
       if (i !== 0) {
-        rotateStart = 50;
+        rotateStart = 60;
       }
       for (let j: number = 0; j < bulbCounter; j += 1) {
         const garlandBulb = document.createElement('li') as HTMLElement;
@@ -48,12 +48,12 @@ class Garland {
         garlandLevel.append(garlandBulb);
         rotateStart += rotateStep;
       }
-      if (rotateStep !== 6) {
+      if (rotateStep !== 4) {
         rotateStep -= 2;
       }
       startPosition = startPosition + positionStep + i;
-      if (bulbCounter !== 14) {
-        bulbCounter += 3;
+      if (bulbCounter !== 12) {
+        bulbCounter += 2;
       }
       garlandContainer.append(garlandLevel);
     }
