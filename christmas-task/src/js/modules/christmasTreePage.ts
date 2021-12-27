@@ -1,7 +1,7 @@
 import TreeOptions from './treeOptions';
 import Garland from './garland';
 import FavoritesBlock from './favoritesBlock';
-import DragAndDrop from './dragAndDropToys';
+import DragAndDrop from './dragToTree';
 
 class ChristmasTreePage {
   static render() {
@@ -94,6 +94,7 @@ class ChristmasTreePage {
     Garland.init();
     FavoritesBlock.render();
     DragAndDrop.selectDragToy();
+    // DragFromTree.selectDragToy();
     /* RangeSlider.createYearSlider();
     ToysCards.render();
     LocalStorage.loadSavedSettings();

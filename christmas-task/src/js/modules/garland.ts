@@ -52,8 +52,8 @@ class Garland {
         rotateStep -= 2;
       }
       startPosition = startPosition + positionStep + i;
-      if (bulbCounter !== 12) {
-        bulbCounter += 2;
+      if (bulbCounter < 15) {
+        bulbCounter += 3;
       }
       garlandContainer.append(garlandLevel);
     }
