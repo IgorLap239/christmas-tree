@@ -109,11 +109,17 @@ class TreeOptions {
     });
   }
 
+  static clearOptions() {
+    const clearButton = document.querySelector('.favorites-menu .reset') as HTMLElement;
+    clearButton.addEventListener('click', LocalStorage.clearTreeLocalStorage);
+  }
+
   static init() {
     this.setTree();
     this.setBackground();
     this.startSnowfall();
     this.playAudio();
+    this.clearOptions();
   }
 }
 

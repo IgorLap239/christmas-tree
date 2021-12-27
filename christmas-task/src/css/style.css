@@ -662,7 +662,7 @@ output {
   transform: rotate(45deg);
 }
 
-.reset {  
+.reset {
   width: 250px;
   height: 40px;
   margin: 10px 0;
@@ -1057,6 +1057,10 @@ output {
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
   right: 0px;
+}
+
+.favorites-page .reset-local {
+  margin: 0;
 }
 
 /* footer */

@@ -13,6 +13,7 @@ class Garland {
     garlandSwitch.addEventListener('change', () => {
       if (garlandSwitch.checked) {
         this.garlandDisplay();
+        LocalStorage.saveGarlandStatus(garlandSwitch.checked);
       } else {
         this.garlandRemove();
       }

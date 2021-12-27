@@ -19,6 +19,7 @@ class ChristmasTreePage {
           <div class="snow-audio-container menu-container">
             <div class="audio-control menu-item"></div>
             <div class="snow-control menu-item"></div>
+            <button class="reset reset-local">Сброс настроек</button>
           </div>
           <div class="tree-container menu-container">
             <div class="tree menu-item" data-tree="1"></div>

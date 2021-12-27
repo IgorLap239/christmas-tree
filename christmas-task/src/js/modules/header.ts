@@ -10,6 +10,7 @@ class Header {
     const treePageLink = header.querySelector('.switch-favorites-page') as HTMLElement;
     const searchField = document.querySelector('.search') as HTMLInputElement;
     const favoritesField = document.querySelector('.select') as HTMLElement;
+    const startButton = document.querySelector('.switch-start-page') as HTMLElement;
     let currentPage = 'StartPage';
     startPageLink.addEventListener('click', () => {
       if (currentPage === 'ToysPage') {
@@ -44,6 +45,9 @@ class Header {
       ChristmasTreePage.render();
       searchField.style.display = 'none';
       favoritesField.style.display = 'block';
+    });
+    startButton.addEventListener('click', () => {
+      currentPage = 'ToysPage';
     });
   }
 }

@@ -3,6 +3,7 @@ import { Filter } from '../interfaces';
 import data from '../data';
 import Sorted from './sort';
 import Filters from './filters';
+import Garland from './garland';
 
 class LocalStorage {
   /* save methods */
@@ -235,6 +236,33 @@ class LocalStorage {
       localStorage.clear();
       Filters.useFilters(clearFilters);
     });
+  }
+
+  static clearTreeLocalStorage() {
+    const mainTree = document.querySelector('.main-tree') as HTMLImageElement;
+    const mainTreeContainer = document.querySelector('.main-tree-container') as HTMLElement;
+    const snowButton = document.querySelector('.snow-control') as HTMLElement;
+    const playButton = document.querySelector('.audio-control') as HTMLElement;
+    const garlandSwitch = document.querySelector('.onoffswitch-checkbox') as HTMLInputElement;
+    mainTree.src = '../assets/tree/1.png';
+    mainTreeContainer.style.backgroundImage = 'url("../assets/bg/1.jpg")';
+    if (LocalStorage.loadSnowfall()) {
+      snowButton.click();
+    }
+    if (LocalStorage.loadAudioStatus()) {
+      playButton.click();
+    }
+    if (LocalStorage.loadGarlandStatus()) {
+      LocalStorage.saveGarlandStatus(false);
+      garlandSwitch.checked = false;
+      Garland.garlandRemove();
+    }
+    localStorage.removeItem('tree');
+    localStorage.removeItem('treeBackground');
+    localStorage.removeItem('snowfall');
+    localStorage.removeItem('audio');
+    localStorage.removeItem('garlandColor');
+    localStorage.removeItem('garlandStatus');
   }
 }
 
