@@ -13,7 +13,7 @@ class TreeOptions {
       const target = e.target as HTMLElement;
 
       if (target.classList.contains('tree')) {
-        mainTree.src = `../assets/tree/${target.dataset.tree}.png`;
+        mainTree.src = `./assets/tree/${target.dataset.tree}.png`;
         LocalStorage.saveTree(mainTree.src);
       }
     });
@@ -30,8 +30,8 @@ class TreeOptions {
     backgroundSelectContainer.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('bg')) {
-        mainTreeContainer.style.backgroundImage = `url("../assets/bg/${target.dataset.bg}.jpg")`;
-        LocalStorage.saveTreeBackground(`url("../assets/bg/${target.dataset.bg}.jpg")`);
+        mainTreeContainer.style.backgroundImage = `url("./assets/bg/${target.dataset.bg}.jpg")`;
+        LocalStorage.saveTreeBackground(`url("./assets/bg/${target.dataset.bg}.jpg")`);
       }
     });
   }
