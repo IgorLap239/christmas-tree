@@ -244,8 +244,8 @@ class LocalStorage {
     const snowButton = document.querySelector('.snow-control') as HTMLElement;
     const playButton = document.querySelector('.audio-control') as HTMLElement;
     const garlandSwitch = document.querySelector('.onoffswitch-checkbox') as HTMLInputElement;
-    mainTree.src = '../assets/tree/1.png';
-    mainTreeContainer.style.backgroundImage = 'url("../assets/bg/1.jpg")';
+    mainTree.src = './assets/tree/1.png';
+    mainTreeContainer.style.backgroundImage = 'url("./assets/bg/1.jpg")';
     if (LocalStorage.loadSnowfall()) {
       snowButton.click();
     }
